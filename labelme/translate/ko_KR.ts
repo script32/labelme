@@ -75,6 +75,10 @@
         <translation>AI가 텍스트 프롬프트에서 주석을 생성합니다</translation>
     </message>
     <message>
+        <source>Running…</source>
+        <translation>실행 중…</translation>
+    </message>
+    <message>
         <source>Select &apos;Polygon&apos;, &apos;Rectangle&apos;, or &apos;AI-Points&apos; mode to enable</source>
         <translation>&apos;Polygon&apos;, &apos;Rectangle&apos; 또는 &apos;AI-Points&apos; 모드를 선택하여 활성화</translation>
     </message>
@@ -226,6 +230,29 @@
     <message>
         <source>Or drag and drop image files here</source>
         <translation>또는 이미지 파일을 여기로 끌어다 놓으세요</translation>
+    </message>
+</context>
+<context>
+    <name>GeminiKeyWidget</name>
+    <message>
+        <source>Paste your Gemini API key</source>
+        <translation>Gemini API 키를 붙여넣으세요</translation>
+    </message>
+    <message>
+        <source>Gemini API key</source>
+        <translation>Gemini API 키</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>지우기</translation>
+    </message>
+    <message>
+        <source>Stored only on this computer, outside the labelme config file. Running Gemini sends the current image to Google.</source>
+        <translation>이 컴퓨터에만 labelme 설정 파일과 별도로 저장됩니다. Gemini를 실행하면 현재 이미지가 Google로 전송됩니다.</translation>
+    </message>
+    <message>
+        <source>API key</source>
+        <translation>API 키</translation>
     </message>
 </context>
 <context>
@@ -678,6 +705,10 @@ Shapes</source>
         <translation>저장 중…</translation>
     </message>
     <message>
+        <source>Running %s…</source>
+        <translation>%s 실행 중…</translation>
+    </message>
+    <message>
         <source>Mask Output Unavailable</source>
         <translation>마스크 출력을 사용할 수 없음</translation>
     </message>
@@ -688,6 +719,26 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>%s은(는) 경계 상자만 감지하므로 &apos;%s&apos; 주석을 생성할 수 없습니다.
 
 AI Text-to-Annotation 모델을 &apos;SAM3 (smart)&apos;(으)로 변경하거나 출력 형식을 &apos;Rectangle&apos;(으)로 설정하세요.</translation>
+    </message>
+    <message>
+        <source>%s found no objects.</source>
+        <translation>%s에서 객체를 찾지 못했습니다.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key. Check it in Settings.</source>
+        <translation>Gemini가 API 키를 거부했습니다. 설정에서 확인하세요.</translation>
+    </message>
+    <message>
+        <source>Gemini quota reached. Try again later.</source>
+        <translation>Gemini 할당량에 도달했습니다. 나중에 다시 시도하세요.</translation>
+    </message>
+    <message>
+        <source>Could not reach Gemini.</source>
+        <translation>Gemini에 연결할 수 없습니다.</translation>
+    </message>
+    <message>
+        <source>Gemini returned an unexpected response.</source>
+        <translation>Gemini가 예상치 못한 응답을 반환했습니다.</translation>
     </message>
     <message>
         <source>Invalid label</source>
@@ -874,6 +925,22 @@ Please select a different model or use AI-Box mode.</source>
     <message>
         <source>Error deleting label file</source>
         <translation>주석 파일 삭제 오류</translation>
+    </message>
+    <message>
+        <source>Gemini API Key Required</source>
+        <translation>Gemini API 키 필요</translation>
+    </message>
+    <message>
+        <source>Set your Gemini API key in Settings to use Gemini.</source>
+        <translation>Gemini를 사용하려면 설정에서 Gemini API 키를 설정하세요.</translation>
+    </message>
+    <message>
+        <source>Send Image to Google?</source>
+        <translation>이미지를 Google로 보내시겠습니까?</translation>
+    </message>
+    <message>
+        <source>Gemini runs in the cloud: the current image and the prompt are sent to Google each time you run it. Continue?</source>
+        <translation>Gemini는 클라우드에서 실행됩니다. 실행할 때마다 현재 이미지와 프롬프트가 Google로 전송됩니다. 계속하시겠습니까?</translation>
     </message>
     <message>
         <source>Image not found</source>
@@ -1319,6 +1386,10 @@ Expected location: {path}</source>
     <message>
         <source>AI Models</source>
         <translation>AI 모델</translation>
+    </message>
+    <message>
+        <source>Gemini</source>
+        <translation>Gemini</translation>
     </message>
     <message>
         <source>Open config file as text…</source>

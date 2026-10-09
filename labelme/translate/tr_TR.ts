@@ -75,6 +75,10 @@
         <translation>AI, metin isteminden açıklamalar oluşturur</translation>
     </message>
     <message>
+        <source>Running…</source>
+        <translation>Çalışıyor…</translation>
+    </message>
+    <message>
         <source>Select &apos;Polygon&apos;, &apos;Rectangle&apos;, or &apos;AI-Points&apos; mode to enable</source>
         <translation>Etkinleştirmek için &apos;Çokgen&apos;, &apos;Dikdörtgen&apos; veya &apos;AI-Noktalar&apos; modunu seçin</translation>
     </message>
@@ -226,6 +230,29 @@
     <message>
         <source>Or drag and drop image files here</source>
         <translation>Veya görüntü dosyalarını buraya sürükleyip bırakın</translation>
+    </message>
+</context>
+<context>
+    <name>GeminiKeyWidget</name>
+    <message>
+        <source>Paste your Gemini API key</source>
+        <translation>Gemini API anahtarınızı yapıştırın</translation>
+    </message>
+    <message>
+        <source>Gemini API key</source>
+        <translation>Gemini API anahtarı</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Temizle</translation>
+    </message>
+    <message>
+        <source>Stored only on this computer, outside the labelme config file. Running Gemini sends the current image to Google.</source>
+        <translation>Yalnızca bu bilgisayarda, labelme yapılandırma dosyasının dışında saklanır. Gemini&apos;yi çalıştırmak mevcut görüntüyü Google&apos;a gönderir.</translation>
+    </message>
+    <message>
+        <source>API key</source>
+        <translation>API anahtarı</translation>
     </message>
 </context>
 <context>
@@ -684,6 +711,10 @@ Shapes</source>
         <translation>Kaydediliyor…</translation>
     </message>
     <message>
+        <source>Running %s…</source>
+        <translation>%s çalışıyor…</translation>
+    </message>
+    <message>
         <source>Mask Output Unavailable</source>
         <translation>Maske çıktısı kullanılamıyor</translation>
     </message>
@@ -694,6 +725,26 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>%s yalnızca sınırlayıcı kutuları algılar ve &apos;%s&apos; ek açıklamaları oluşturamaz.
 
 AI Text-to-Annotation modelini &apos;SAM3 (smart)&apos; olarak değiştirin veya çıktı biçimini &apos;Rectangle&apos; olarak ayarlayın.</translation>
+    </message>
+    <message>
+        <source>%s found no objects.</source>
+        <translation>%s hiç nesne bulamadı.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key. Check it in Settings.</source>
+        <translation>Gemini API anahtarını reddetti. Ayarlar&apos;dan kontrol edin.</translation>
+    </message>
+    <message>
+        <source>Gemini quota reached. Try again later.</source>
+        <translation>Gemini kotasına ulaşıldı. Daha sonra tekrar deneyin.</translation>
+    </message>
+    <message>
+        <source>Could not reach Gemini.</source>
+        <translation>Gemini&apos;ye ulaşılamadı.</translation>
+    </message>
+    <message>
+        <source>Gemini returned an unexpected response.</source>
+        <translation>Gemini beklenmeyen bir yanıt döndürdü.</translation>
     </message>
     <message>
         <source>Invalid label</source>
@@ -880,6 +931,22 @@ Lütfen farklı bir model seçin veya AI-Box modunu kullanın.</translation>
     <message>
         <source>Error deleting label file</source>
         <translation>Açıklama dosyası silinirken hata oluştu</translation>
+    </message>
+    <message>
+        <source>Gemini API Key Required</source>
+        <translation>Gemini API anahtarı gerekli</translation>
+    </message>
+    <message>
+        <source>Set your Gemini API key in Settings to use Gemini.</source>
+        <translation>Gemini&apos;yi kullanmak için Ayarlar&apos;da Gemini API anahtarınızı ayarlayın.</translation>
+    </message>
+    <message>
+        <source>Send Image to Google?</source>
+        <translation>Görüntü Google&apos;a gönderilsin mi?</translation>
+    </message>
+    <message>
+        <source>Gemini runs in the cloud: the current image and the prompt are sent to Google each time you run it. Continue?</source>
+        <translation>Gemini bulutta çalışır: her çalıştırdığınızda mevcut görüntü ve istem Google&apos;a gönderilir. Devam edilsin mi?</translation>
     </message>
     <message>
         <source>Image not found</source>
@@ -1325,6 +1392,10 @@ Beklenen konum: {path}</translation>
     <message>
         <source>AI Models</source>
         <translation>Yapay zekâ modelleri</translation>
+    </message>
+    <message>
+        <source>Gemini</source>
+        <translation>Gemini</translation>
     </message>
     <message>
         <source>Open config file as text…</source>

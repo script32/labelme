@@ -75,6 +75,10 @@
         <translation>AI membuat anotasi dari prompt teks</translation>
     </message>
     <message>
+        <source>Running…</source>
+        <translation>Menjalankan…</translation>
+    </message>
+    <message>
         <source>Select &apos;Polygon&apos;, &apos;Rectangle&apos;, or &apos;AI-Points&apos; mode to enable</source>
         <translation>Pilih mode &apos;Polygon&apos;, &apos;Rectangle&apos;, atau &apos;AI-Points&apos; untuk mengaktifkan</translation>
     </message>
@@ -226,6 +230,29 @@
     <message>
         <source>Or drag and drop image files here</source>
         <translation>Atau seret dan lepaskan file gambar di sini</translation>
+    </message>
+</context>
+<context>
+    <name>GeminiKeyWidget</name>
+    <message>
+        <source>Paste your Gemini API key</source>
+        <translation>Tempel kunci API Gemini Anda</translation>
+    </message>
+    <message>
+        <source>Gemini API key</source>
+        <translation>Kunci API Gemini</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Hapus</translation>
+    </message>
+    <message>
+        <source>Stored only on this computer, outside the labelme config file. Running Gemini sends the current image to Google.</source>
+        <translation>Disimpan hanya di komputer ini, di luar file konfigurasi labelme. Menjalankan Gemini akan mengirim gambar saat ini ke Google.</translation>
+    </message>
+    <message>
+        <source>API key</source>
+        <translation>Kunci API</translation>
     </message>
 </context>
 <context>
@@ -653,6 +680,10 @@
         <translation>Menyimpan…</translation>
     </message>
     <message>
+        <source>Running %s…</source>
+        <translation>Menjalankan %s…</translation>
+    </message>
+    <message>
         <source>Mask Output Unavailable</source>
         <translation>Keluaran mask tidak tersedia</translation>
     </message>
@@ -663,6 +694,26 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>%s hanya mendeteksi kotak pembatas dan tidak dapat membuat anotasi &apos;%s&apos;.
 
 Ganti model AI Text-to-Annotation ke &apos;SAM3 (smart)&apos;, atau atur format keluaran ke &apos;Rectangle&apos;.</translation>
+    </message>
+    <message>
+        <source>%s found no objects.</source>
+        <translation>%s tidak menemukan objek.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key. Check it in Settings.</source>
+        <translation>Gemini menolak kunci API. Periksa di Pengaturan.</translation>
+    </message>
+    <message>
+        <source>Gemini quota reached. Try again later.</source>
+        <translation>Kuota Gemini tercapai. Coba lagi nanti.</translation>
+    </message>
+    <message>
+        <source>Could not reach Gemini.</source>
+        <translation>Tidak dapat menghubungi Gemini.</translation>
+    </message>
+    <message>
+        <source>Gemini returned an unexpected response.</source>
+        <translation>Gemini mengembalikan respons yang tidak terduga.</translation>
     </message>
     <message>
         <source>Invalid label</source>
@@ -849,6 +900,22 @@ Silakan pilih model lain atau gunakan mode AI-Box.</translation>
     <message>
         <source>Error deleting label file</source>
         <translation>Gagal menghapus berkas anotasi</translation>
+    </message>
+    <message>
+        <source>Gemini API Key Required</source>
+        <translation>Kunci API Gemini diperlukan</translation>
+    </message>
+    <message>
+        <source>Set your Gemini API key in Settings to use Gemini.</source>
+        <translation>Atur kunci API Gemini Anda di Pengaturan untuk menggunakan Gemini.</translation>
+    </message>
+    <message>
+        <source>Send Image to Google?</source>
+        <translation>Kirim gambar ke Google?</translation>
+    </message>
+    <message>
+        <source>Gemini runs in the cloud: the current image and the prompt are sent to Google each time you run it. Continue?</source>
+        <translation>Gemini berjalan di cloud: gambar saat ini dan prompt dikirim ke Google setiap kali Anda menjalankannya. Lanjutkan?</translation>
     </message>
     <message>
         <source>Image not found</source>
@@ -1087,6 +1154,10 @@ Shapes</source>
     <message>
         <source>AI Models</source>
         <translation>Model AI</translation>
+    </message>
+    <message>
+        <source>Gemini</source>
+        <translation>Gemini</translation>
     </message>
     <message>
         <source>Open config file as text…</source>

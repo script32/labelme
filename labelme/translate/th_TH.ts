@@ -75,6 +75,10 @@
         <translation>AI สร้างแอนโนเทชันจากข้อความที่ป้อน</translation>
     </message>
     <message>
+        <source>Running…</source>
+        <translation>กำลังรัน…</translation>
+    </message>
+    <message>
         <source>Select &apos;Polygon&apos;, &apos;Rectangle&apos;, or &apos;AI-Points&apos; mode to enable</source>
         <translation>เลือกโหมด &apos;Polygon&apos;, &apos;Rectangle&apos; หรือ &apos;AI-Points&apos; เพื่อเปิดใช้งาน</translation>
     </message>
@@ -226,6 +230,29 @@
     <message>
         <source>Or drag and drop image files here</source>
         <translation>หรือลากและวางไฟล์รูปภาพที่นี่</translation>
+    </message>
+</context>
+<context>
+    <name>GeminiKeyWidget</name>
+    <message>
+        <source>Paste your Gemini API key</source>
+        <translation>วางคีย์ API ของ Gemini</translation>
+    </message>
+    <message>
+        <source>Gemini API key</source>
+        <translation>คีย์ API ของ Gemini</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>ล้าง</translation>
+    </message>
+    <message>
+        <source>Stored only on this computer, outside the labelme config file. Running Gemini sends the current image to Google.</source>
+        <translation>จัดเก็บไว้ในคอมพิวเตอร์เครื่องนี้เท่านั้น แยกจากไฟล์การกำหนดค่าของ labelme การรัน Gemini จะส่งรูปภาพปัจจุบันไปยัง Google</translation>
+    </message>
+    <message>
+        <source>API key</source>
+        <translation>คีย์ API</translation>
     </message>
 </context>
 <context>
@@ -678,6 +705,10 @@ Shapes</source>
         <translation>กำลังบันทึก…</translation>
     </message>
     <message>
+        <source>Running %s…</source>
+        <translation>กำลังรัน %s…</translation>
+    </message>
+    <message>
         <source>Mask Output Unavailable</source>
         <translation>ไม่สามารถสร้างเอาต์พุตมาสก์ได้</translation>
     </message>
@@ -688,6 +719,26 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>%s ตรวจจับได้เฉพาะกรอบขอบเขตเท่านั้น และไม่สามารถสร้างคำอธิบายประกอบ &apos;%s&apos; ได้
 
 เปลี่ยนโมเดล AI Text-to-Annotation เป็น &apos;SAM3 (smart)&apos; หรือตั้งค่ารูปแบบเอาต์พุตเป็น &apos;Rectangle&apos;</translation>
+    </message>
+    <message>
+        <source>%s found no objects.</source>
+        <translation>%s ไม่พบวัตถุ</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key. Check it in Settings.</source>
+        <translation>Gemini ปฏิเสธคีย์ API โปรดตรวจสอบในการตั้งค่า</translation>
+    </message>
+    <message>
+        <source>Gemini quota reached. Try again later.</source>
+        <translation>ใช้โควตา Gemini ครบแล้ว โปรดลองอีกครั้งภายหลัง</translation>
+    </message>
+    <message>
+        <source>Could not reach Gemini.</source>
+        <translation>ไม่สามารถติดต่อ Gemini ได้</translation>
+    </message>
+    <message>
+        <source>Gemini returned an unexpected response.</source>
+        <translation>Gemini ส่งการตอบกลับที่ไม่คาดคิด</translation>
     </message>
     <message>
         <source>Invalid label</source>
@@ -874,6 +925,22 @@ Please select a different model or use AI-Box mode.</source>
     <message>
         <source>Error deleting label file</source>
         <translation>เกิดข้อผิดพลาดขณะลบไฟล์คำอธิบายประกอบ</translation>
+    </message>
+    <message>
+        <source>Gemini API Key Required</source>
+        <translation>ต้องมีคีย์ API ของ Gemini</translation>
+    </message>
+    <message>
+        <source>Set your Gemini API key in Settings to use Gemini.</source>
+        <translation>ตั้งค่าคีย์ API ของ Gemini ในการตั้งค่าเพื่อใช้ Gemini</translation>
+    </message>
+    <message>
+        <source>Send Image to Google?</source>
+        <translation>ส่งรูปภาพไปยัง Google หรือไม่</translation>
+    </message>
+    <message>
+        <source>Gemini runs in the cloud: the current image and the prompt are sent to Google each time you run it. Continue?</source>
+        <translation>Gemini ทำงานบนคลาวด์: รูปภาพปัจจุบันและพรอมต์จะถูกส่งไปยัง Google ทุกครั้งที่รัน ดำเนินการต่อหรือไม่</translation>
     </message>
     <message>
         <source>Image not found</source>
@@ -1319,6 +1386,10 @@ Expected location: {path}</source>
     <message>
         <source>AI Models</source>
         <translation>โมเดล AI</translation>
+    </message>
+    <message>
+        <source>Gemini</source>
+        <translation>Gemini</translation>
     </message>
     <message>
         <source>Open config file as text…</source>

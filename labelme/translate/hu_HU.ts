@@ -75,6 +75,10 @@
         <translation>Az AI annotációkat hoz létre a szöveges promptból</translation>
     </message>
     <message>
+        <source>Running…</source>
+        <translation>Futtatás…</translation>
+    </message>
+    <message>
         <source>Select &apos;Polygon&apos;, &apos;Rectangle&apos;, or &apos;AI-Points&apos; mode to enable</source>
         <translation>Válassza a &apos;Polygon&apos;, &apos;Rectangle&apos; vagy &apos;AI-Points&apos; módot az engedélyezéshez</translation>
     </message>
@@ -226,6 +230,29 @@
     <message>
         <source>Or drag and drop image files here</source>
         <translation>Vagy húzzon ide képfájlokat</translation>
+    </message>
+</context>
+<context>
+    <name>GeminiKeyWidget</name>
+    <message>
+        <source>Paste your Gemini API key</source>
+        <translation>Illessze be a Gemini API-kulcsát</translation>
+    </message>
+    <message>
+        <source>Gemini API key</source>
+        <translation>Gemini API-kulcs</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Törlés</translation>
+    </message>
+    <message>
+        <source>Stored only on this computer, outside the labelme config file. Running Gemini sends the current image to Google.</source>
+        <translation>Csak ezen a számítógépen tárolódik, a labelme konfigurációs fájlján kívül. A Gemini futtatása elküldi az aktuális képet a Google-nek.</translation>
+    </message>
+    <message>
+        <source>API key</source>
+        <translation>API-kulcs</translation>
     </message>
 </context>
 <context>
@@ -692,6 +719,10 @@ Shapes</source>
         <translation>Mentés…</translation>
     </message>
     <message>
+        <source>Running %s…</source>
+        <translation>%s futtatása…</translation>
+    </message>
+    <message>
         <source>Mask Output Unavailable</source>
         <translation>A maszk kimenet nem érhető el</translation>
     </message>
@@ -702,6 +733,26 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>A(z) %s csak határolókereteket észlel, és nem tud &apos;%s&apos; típusú annotációkat létrehozni.
 
 Váltson az AI Text-to-Annotation modellnél &apos;SAM3 (smart)&apos;-re, vagy állítsa a kimeneti formátumot &apos;Rectangle&apos; értékre.</translation>
+    </message>
+    <message>
+        <source>%s found no objects.</source>
+        <translation>%s nem talált objektumot.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key. Check it in Settings.</source>
+        <translation>A Gemini elutasította az API-kulcsot. Ellenőrizze a Beállításokban.</translation>
+    </message>
+    <message>
+        <source>Gemini quota reached. Try again later.</source>
+        <translation>Elérte a Gemini kvótáját. Próbálja újra később.</translation>
+    </message>
+    <message>
+        <source>Could not reach Gemini.</source>
+        <translation>Nem sikerült elérni a Geminit.</translation>
+    </message>
+    <message>
+        <source>Gemini returned an unexpected response.</source>
+        <translation>A Gemini váratlan választ adott.</translation>
     </message>
     <message>
         <source>Invalid label</source>
@@ -880,6 +931,22 @@ Kérjük, válasszon másik modellt vagy használja az AI-Box módot.</translati
     <message>
         <source>Error deleting label file</source>
         <translation>Hiba az annotációs fájl törlésekor</translation>
+    </message>
+    <message>
+        <source>Gemini API Key Required</source>
+        <translation>Gemini API-kulcs szükséges</translation>
+    </message>
+    <message>
+        <source>Set your Gemini API key in Settings to use Gemini.</source>
+        <translation>A Gemini használatához adja meg a Gemini API-kulcsát a Beállításokban.</translation>
+    </message>
+    <message>
+        <source>Send Image to Google?</source>
+        <translation>Elküldi a képet a Google-nek?</translation>
+    </message>
+    <message>
+        <source>Gemini runs in the cloud: the current image and the prompt are sent to Google each time you run it. Continue?</source>
+        <translation>A Gemini a felhőben fut: minden futtatáskor elküldi az aktuális képet és a szöveges utasítást a Google-nek. Folytatja?</translation>
     </message>
     <message>
         <source>Image not found</source>
@@ -1325,6 +1392,10 @@ Várt hely: {path}</translation>
     <message>
         <source>AI Models</source>
         <translation>AI-modellek</translation>
+    </message>
+    <message>
+        <source>Gemini</source>
+        <translation>Gemini</translation>
     </message>
     <message>
         <source>Open config file as text…</source>

@@ -75,6 +75,10 @@
         <translation>AI 将根据文本提示生成标注</translation>
     </message>
     <message>
+        <source>Running…</source>
+        <translation>运行中…</translation>
+    </message>
+    <message>
         <source>Select &apos;Polygon&apos;, &apos;Rectangle&apos;, or &apos;AI-Points&apos; mode to enable</source>
         <translation>请选择 &apos;Polygon&apos;、&apos;Rectangle&apos; 或 &apos;AI-Points&apos; 模式以启用</translation>
     </message>
@@ -226,6 +230,29 @@
     <message>
         <source>Or drag and drop image files here</source>
         <translation>或将图像文件拖放到此处</translation>
+    </message>
+</context>
+<context>
+    <name>GeminiKeyWidget</name>
+    <message>
+        <source>Paste your Gemini API key</source>
+        <translation>粘贴您的 Gemini API 密钥</translation>
+    </message>
+    <message>
+        <source>Gemini API key</source>
+        <translation>Gemini API 密钥</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>清除</translation>
+    </message>
+    <message>
+        <source>Stored only on this computer, outside the labelme config file. Running Gemini sends the current image to Google.</source>
+        <translation>仅保存在本机，不写入 labelme 配置文件。运行 Gemini 会将当前图像发送给 Google。</translation>
+    </message>
+    <message>
+        <source>API key</source>
+        <translation>API 密钥</translation>
     </message>
 </context>
 <context>
@@ -684,6 +711,10 @@ Shapes</source>
         <translation>正在保存…</translation>
     </message>
     <message>
+        <source>Running %s…</source>
+        <translation>正在运行 %s…</translation>
+    </message>
+    <message>
         <source>Mask Output Unavailable</source>
         <translation>掩膜输出不可用</translation>
     </message>
@@ -694,6 +725,26 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>%s 仅检测边界框，无法创建 &apos;%s&apos; 标注。
 
 请将 AI Text-to-Annotation 模型切换为 &apos;SAM3 (smart)&apos;，或将输出格式设置为 &apos;Rectangle&apos;。</translation>
+    </message>
+    <message>
+        <source>%s found no objects.</source>
+        <translation>%s 未找到任何对象。</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key. Check it in Settings.</source>
+        <translation>Gemini 拒绝了 API 密钥。请在设置中检查。</translation>
+    </message>
+    <message>
+        <source>Gemini quota reached. Try again later.</source>
+        <translation>已达到 Gemini 配额。请稍后重试。</translation>
+    </message>
+    <message>
+        <source>Could not reach Gemini.</source>
+        <translation>无法连接到 Gemini。</translation>
+    </message>
+    <message>
+        <source>Gemini returned an unexpected response.</source>
+        <translation>Gemini 返回了意外的响应。</translation>
     </message>
     <message>
         <source>Invalid label</source>
@@ -880,6 +931,22 @@ Please select a different model or use AI-Box mode.</source>
     <message>
         <source>Error deleting label file</source>
         <translation>删除标注文件出错</translation>
+    </message>
+    <message>
+        <source>Gemini API Key Required</source>
+        <translation>需要 Gemini API 密钥</translation>
+    </message>
+    <message>
+        <source>Set your Gemini API key in Settings to use Gemini.</source>
+        <translation>请在设置中配置 Gemini API 密钥以使用 Gemini。</translation>
+    </message>
+    <message>
+        <source>Send Image to Google?</source>
+        <translation>将图像发送给 Google？</translation>
+    </message>
+    <message>
+        <source>Gemini runs in the cloud: the current image and the prompt are sent to Google each time you run it. Continue?</source>
+        <translation>Gemini 在云端运行：每次运行时，当前图像和提示词都会发送给 Google。是否继续？</translation>
     </message>
     <message>
         <source>Image not found</source>
@@ -1325,6 +1392,10 @@ Expected location: {path}</source>
     <message>
         <source>AI Models</source>
         <translation>AI 模型</translation>
+    </message>
+    <message>
+        <source>Gemini</source>
+        <translation>Gemini</translation>
     </message>
     <message>
         <source>Open config file as text…</source>

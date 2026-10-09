@@ -75,6 +75,10 @@
         <translation>AI tạo chú thích dựa trên nội dung lời nhắc văn bản</translation>
     </message>
     <message>
+        <source>Running…</source>
+        <translation>Đang chạy…</translation>
+    </message>
+    <message>
         <source>Select &apos;Polygon&apos;, &apos;Rectangle&apos;, or &apos;AI-Points&apos; mode to enable</source>
         <translation>Chọn chế độ &apos;Polygon&apos;, &apos;Rectangle&apos; hoặc &apos;AI-Points&apos; để bật</translation>
     </message>
@@ -226,6 +230,29 @@
     <message>
         <source>Or drag and drop image files here</source>
         <translation>Hoặc kéo và thả tệp hình ảnh vào đây</translation>
+    </message>
+</context>
+<context>
+    <name>GeminiKeyWidget</name>
+    <message>
+        <source>Paste your Gemini API key</source>
+        <translation>Dán khóa API Gemini của bạn</translation>
+    </message>
+    <message>
+        <source>Gemini API key</source>
+        <translation>Khóa API Gemini</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Xóa</translation>
+    </message>
+    <message>
+        <source>Stored only on this computer, outside the labelme config file. Running Gemini sends the current image to Google.</source>
+        <translation>Chỉ được lưu trên máy tính này, bên ngoài tệp cấu hình của labelme. Khi chạy Gemini, ảnh hiện tại sẽ được gửi tới Google.</translation>
+    </message>
+    <message>
+        <source>API key</source>
+        <translation>Khóa API</translation>
     </message>
 </context>
 <context>
@@ -678,6 +705,10 @@ Shapes</source>
         <translation>Đang lưu…</translation>
     </message>
     <message>
+        <source>Running %s…</source>
+        <translation>Đang chạy %s…</translation>
+    </message>
+    <message>
         <source>Mask Output Unavailable</source>
         <translation>Không có đầu ra mặt nạ</translation>
     </message>
@@ -688,6 +719,26 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>%s chỉ phát hiện khung giới hạn và không thể tạo chú thích &apos;%s&apos;.
 
 Chuyển mô hình AI Text-to-Annotation sang &apos;SAM3 (smart)&apos;, hoặc đặt định dạng đầu ra thành &apos;Rectangle&apos;.</translation>
+    </message>
+    <message>
+        <source>%s found no objects.</source>
+        <translation>%s không tìm thấy đối tượng nào.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key. Check it in Settings.</source>
+        <translation>Gemini đã từ chối khóa API. Hãy kiểm tra trong Cài đặt.</translation>
+    </message>
+    <message>
+        <source>Gemini quota reached. Try again later.</source>
+        <translation>Đã hết hạn mức Gemini. Hãy thử lại sau.</translation>
+    </message>
+    <message>
+        <source>Could not reach Gemini.</source>
+        <translation>Không thể kết nối tới Gemini.</translation>
+    </message>
+    <message>
+        <source>Gemini returned an unexpected response.</source>
+        <translation>Gemini trả về phản hồi không mong đợi.</translation>
     </message>
     <message>
         <source>Invalid label</source>
@@ -874,6 +925,22 @@ Vui lòng chọn mô hình khác hoặc sử dụng chế độ AI-Box.</transla
     <message>
         <source>Error deleting label file</source>
         <translation>Lỗi khi xóa tệp chú thích</translation>
+    </message>
+    <message>
+        <source>Gemini API Key Required</source>
+        <translation>Cần khóa API Gemini</translation>
+    </message>
+    <message>
+        <source>Set your Gemini API key in Settings to use Gemini.</source>
+        <translation>Hãy đặt khóa API Gemini trong Cài đặt để sử dụng Gemini.</translation>
+    </message>
+    <message>
+        <source>Send Image to Google?</source>
+        <translation>Gửi ảnh tới Google?</translation>
+    </message>
+    <message>
+        <source>Gemini runs in the cloud: the current image and the prompt are sent to Google each time you run it. Continue?</source>
+        <translation>Gemini chạy trên đám mây: ảnh hiện tại và câu lệnh sẽ được gửi tới Google mỗi lần bạn chạy. Tiếp tục?</translation>
     </message>
     <message>
         <source>Image not found</source>
@@ -1319,6 +1386,10 @@ Vị trí dự kiến: {path}</translation>
     <message>
         <source>AI Models</source>
         <translation>Mô hình AI</translation>
+    </message>
+    <message>
+        <source>Gemini</source>
+        <translation>Gemini</translation>
     </message>
     <message>
         <source>Open config file as text…</source>

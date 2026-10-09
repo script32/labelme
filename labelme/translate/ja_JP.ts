@@ -75,6 +75,10 @@
         <translation>AIがテキストプロンプトからアノテーションを作成</translation>
     </message>
     <message>
+        <source>Running…</source>
+        <translation>実行中…</translation>
+    </message>
+    <message>
         <source>Select &apos;Polygon&apos;, &apos;Rectangle&apos;, or &apos;AI-Points&apos; mode to enable</source>
         <translation>「Polygon」「Rectangle」または「AI-Points」モードで有効</translation>
     </message>
@@ -226,6 +230,29 @@
     <message>
         <source>Or drag and drop image files here</source>
         <translation>または、画像ファイルをここにドラッグ＆ドロップします</translation>
+    </message>
+</context>
+<context>
+    <name>GeminiKeyWidget</name>
+    <message>
+        <source>Paste your Gemini API key</source>
+        <translation>Gemini の API キーを貼り付け</translation>
+    </message>
+    <message>
+        <source>Gemini API key</source>
+        <translation>Gemini API キー</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>クリア</translation>
+    </message>
+    <message>
+        <source>Stored only on this computer, outside the labelme config file. Running Gemini sends the current image to Google.</source>
+        <translation>このコンピューターにのみ、labelme の設定ファイルとは別に保存されます。Gemini を実行すると、現在の画像が Google に送信されます。</translation>
+    </message>
+    <message>
+        <source>API key</source>
+        <translation>API キー</translation>
     </message>
 </context>
 <context>
@@ -692,6 +719,10 @@ Shapes</source>
         <translation>保存中…</translation>
     </message>
     <message>
+        <source>Running %s…</source>
+        <translation>%s を実行中…</translation>
+    </message>
+    <message>
         <source>Mask Output Unavailable</source>
         <translation>マスク出力は利用できません</translation>
     </message>
@@ -702,6 +733,26 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>%s はバウンディングボックスのみを検出するため、&apos;%s&apos; アノテーションを作成できません。
 
 AI Text-to-Annotation モデルを &apos;SAM3 (smart)&apos; に切り替えるか、出力形式を &apos;Rectangle&apos; に設定してください。</translation>
+    </message>
+    <message>
+        <source>%s found no objects.</source>
+        <translation>%s はオブジェクトを検出しませんでした。</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key. Check it in Settings.</source>
+        <translation>Gemini が API キーを拒否しました。設定で確認してください。</translation>
+    </message>
+    <message>
+        <source>Gemini quota reached. Try again later.</source>
+        <translation>Gemini の利用上限に達しました。後でもう一度お試しください。</translation>
+    </message>
+    <message>
+        <source>Could not reach Gemini.</source>
+        <translation>Gemini に接続できませんでした。</translation>
+    </message>
+    <message>
+        <source>Gemini returned an unexpected response.</source>
+        <translation>Gemini から予期しない応答が返されました。</translation>
     </message>
     <message>
         <source>Invalid label</source>
@@ -888,6 +939,22 @@ Please select a different model or use AI-Box mode.</source>
     <message>
         <source>Error deleting label file</source>
         <translation>アノテーションファイルの削除エラー</translation>
+    </message>
+    <message>
+        <source>Gemini API Key Required</source>
+        <translation>Gemini API キーが必要です</translation>
+    </message>
+    <message>
+        <source>Set your Gemini API key in Settings to use Gemini.</source>
+        <translation>Gemini を使うには、設定で Gemini API キーを設定してください。</translation>
+    </message>
+    <message>
+        <source>Send Image to Google?</source>
+        <translation>画像を Google に送信しますか？</translation>
+    </message>
+    <message>
+        <source>Gemini runs in the cloud: the current image and the prompt are sent to Google each time you run it. Continue?</source>
+        <translation>Gemini はクラウドで実行されます。実行するたびに、現在の画像とプロンプトが Google に送信されます。続行しますか？</translation>
     </message>
     <message>
         <source>Image not found</source>
@@ -1333,6 +1400,10 @@ Expected location: {path}</source>
     <message>
         <source>AI Models</source>
         <translation>AIモデル</translation>
+    </message>
+    <message>
+        <source>Gemini</source>
+        <translation>Gemini</translation>
     </message>
     <message>
         <source>Open config file as text…</source>

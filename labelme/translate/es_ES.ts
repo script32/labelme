@@ -75,6 +75,10 @@
         <translation>La IA crea anotaciones a partir del texto</translation>
     </message>
     <message>
+        <source>Running…</source>
+        <translation>Ejecutando…</translation>
+    </message>
+    <message>
         <source>Select &apos;Polygon&apos;, &apos;Rectangle&apos;, or &apos;AI-Points&apos; mode to enable</source>
         <translation>Selecciona el modo &apos;Polygon&apos;, &apos;Rectangle&apos; o &apos;AI-Points&apos; para habilitar</translation>
     </message>
@@ -226,6 +230,29 @@
     <message>
         <source>Or drag and drop image files here</source>
         <translation>O arrastra y suelta archivos de imagen aquí</translation>
+    </message>
+</context>
+<context>
+    <name>GeminiKeyWidget</name>
+    <message>
+        <source>Paste your Gemini API key</source>
+        <translation>Pega tu API key de Gemini</translation>
+    </message>
+    <message>
+        <source>Gemini API key</source>
+        <translation>API key de Gemini</translation>
+    </message>
+    <message>
+        <source>Clear</source>
+        <translation>Borrar</translation>
+    </message>
+    <message>
+        <source>Stored only on this computer, outside the labelme config file. Running Gemini sends the current image to Google.</source>
+        <translation>Se guarda solo en este equipo, fuera del archivo de configuración de labelme. Al usar Gemini, la imagen actual se envía a Google.</translation>
+    </message>
+    <message>
+        <source>API key</source>
+        <translation>API key</translation>
     </message>
 </context>
 <context>
@@ -678,6 +705,10 @@ Shapes</source>
         <translation>Guardando…</translation>
     </message>
     <message>
+        <source>Running %s…</source>
+        <translation>Ejecutando %s…</translation>
+    </message>
+    <message>
         <source>Mask Output Unavailable</source>
         <translation>Salida de máscara no disponible</translation>
     </message>
@@ -688,6 +719,26 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>%s solo detecta cuadros delimitadores y no puede crear anotaciones &apos;%s&apos;.
 
 Cambie el modelo de AI Text-to-Annotation a &apos;SAM3 (smart)&apos; o establezca el formato de salida en &apos;Rectangle&apos;.</translation>
+    </message>
+    <message>
+        <source>%s found no objects.</source>
+        <translation>%s no encontró objetos.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key. Check it in Settings.</source>
+        <translation>Gemini rechazó la API key. Revísala en Ajustes.</translation>
+    </message>
+    <message>
+        <source>Gemini quota reached. Try again later.</source>
+        <translation>Se alcanzó el límite de Gemini. Inténtalo más tarde.</translation>
+    </message>
+    <message>
+        <source>Could not reach Gemini.</source>
+        <translation>No se pudo contactar con Gemini.</translation>
+    </message>
+    <message>
+        <source>Gemini returned an unexpected response.</source>
+        <translation>Gemini devolvió una respuesta inesperada.</translation>
     </message>
     <message>
         <source>Invalid label</source>
@@ -874,6 +925,22 @@ Seleccione un modelo diferente o use el modo AI-Box.</translation>
     <message>
         <source>Error deleting label file</source>
         <translation>Error al eliminar el archivo de anotaciones</translation>
+    </message>
+    <message>
+        <source>Gemini API Key Required</source>
+        <translation>Se requiere la API key de Gemini</translation>
+    </message>
+    <message>
+        <source>Set your Gemini API key in Settings to use Gemini.</source>
+        <translation>Configura tu API key de Gemini en Ajustes para usar Gemini.</translation>
+    </message>
+    <message>
+        <source>Send Image to Google?</source>
+        <translation>¿Enviar la imagen a Google?</translation>
+    </message>
+    <message>
+        <source>Gemini runs in the cloud: the current image and the prompt are sent to Google each time you run it. Continue?</source>
+        <translation>Gemini se ejecuta en la nube: la imagen actual y el texto se envían a Google cada vez que lo usas. ¿Continuar?</translation>
     </message>
     <message>
         <source>Image not found</source>
@@ -1319,6 +1386,10 @@ Ubicación esperada: {path}</translation>
     <message>
         <source>AI Models</source>
         <translation>Modelos de IA</translation>
+    </message>
+    <message>
+        <source>Gemini</source>
+        <translation>Gemini</translation>
     </message>
     <message>
         <source>Open config file as text…</source>
