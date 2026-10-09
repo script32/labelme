@@ -1,2 +1,2 @@
 [files]
-extend-exclude = ["labelme/translate/"]
+extend-exclude = ["labelme/translate/", "docs/superpowers/"]
