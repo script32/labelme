@@ -83,10 +83,12 @@ def test_download_does_not_select_and_delete_clears_both_sam3_choices(
     win = main_win(config_file=config)
     assist = win._ai_annotation._model_combo
     text = win._ai_text._model_combo
-    for picker in (assist, text):
+    # Cloud text models need no download, so they stay listed in the text picker.
+    for picker, expected_count in ((assist, 1), (text, 2)):
         assert picker.currentIndex() == -1
-        assert picker.count() == 1
+        assert picker.count() == expected_count
         assert "Unavailable" in picker.placeholderText()
+    assert text.findData("gemini") != -1
     assert not requests
     assert win._config["ai"]["text_model"] == name
 
