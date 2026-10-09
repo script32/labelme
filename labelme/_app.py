@@ -73,6 +73,7 @@ from ._widgets import ToolBar
 from ._widgets import UniqueLabelQListWidget
 from ._widgets import ZoomWidget
 from ._widgets import format_shape_label
+from ._widgets._gemini_key_widget import GeminiKeyWidget
 from ._widgets._label_list_widget import LABEL_COLOR_ROLE
 from ._widgets._models_widget import ModelsWidget
 
@@ -3134,6 +3135,8 @@ class MainWindow(QtWidgets.QMainWindow):
 
     def _open_gemini_settings(self) -> None:
         self._open_settings()
+        assert self._settings_dialog is not None
+        self._settings_dialog.show_gemini()
 
     def _refresh_model_availability(self) -> None:
         available = {
@@ -3196,6 +3199,7 @@ class MainWindow(QtWidgets.QMainWindow):
                 models_widget=ModelsWidget(
                     manager=self._model_manager, remove_model=self._remove_ai_model
                 ),
+                gemini_widget=GeminiKeyWidget(settings=self._window_state),
                 settings_editable=self._is_settings_editable,
                 parent=self,
             )

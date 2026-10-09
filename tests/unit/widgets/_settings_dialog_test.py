@@ -1011,3 +1011,23 @@ def test_shape_flag_validation_preserves_accessible_note(
     assert editor.accessibleDescription() == note
     remove.click()
     assert editor.accessibleDescription() == note
+
+
+def test_gemini_page_stays_enabled_when_settings_are_not_editable(
+    *, qtbot: QtBot
+) -> None:
+    gemini_widget = QtWidgets.QWidget()
+    dialog = SettingsDialog(
+        config=load_config(config_file=None, config_overrides={}),
+        apply_setting=lambda _key_path, _value: True,
+        preview_shape_color=lambda _key_path, _value: None,
+        open_as_text=lambda: None,
+        gemini_widget=gemini_widget,
+        settings_editable=False,
+    )
+    qtbot.addWidget(dialog)
+    dialog.show_gemini()
+    assert gemini_widget.isEnabled()
+    item = dialog._page._navigation.currentItem()
+    assert item is not None
+    assert item.text() == "Gemini"

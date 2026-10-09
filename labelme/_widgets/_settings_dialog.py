@@ -779,6 +779,7 @@ class SettingsDialog(QtWidgets.QDialog):
         preview_shape_color: PreviewShapeColor,
         open_as_text: Callable[[], None],
         models_widget: QtWidgets.QWidget | None = None,
+        gemini_widget: QtWidgets.QWidget | None = None,
         settings_editable: bool = True,  # noqa: FBT001 -- controls config editing
         parent: QtWidgets.QWidget | None = None,
     ) -> None:
@@ -821,6 +822,15 @@ class SettingsDialog(QtWidgets.QDialog):
             QtWidgets.QVBoxLayout(model_group).addWidget(models_widget)
             groups.append(
                 (self.tr("AI Models"), new_icon("phosphor/sparkle.svg"), model_group)
+            )
+        self._gemini_index = len(groups)
+        if gemini_widget is not None:
+            # Like AI Models, the key is not part of the Config, so it stays
+            # editable even when command-line Settings lock the Config pages.
+            gemini_group = QtWidgets.QGroupBox(self.tr("Gemini"))
+            QtWidgets.QVBoxLayout(gemini_group).addWidget(gemini_widget)
+            groups.append(
+                (self.tr("Gemini"), new_icon("phosphor/sparkle.svg"), gemini_group)
             )
         page = _SettingsPage(groups=groups, editors=self._editors)
         self._page = page
@@ -881,6 +891,10 @@ class SettingsDialog(QtWidgets.QDialog):
     def show_models(self) -> None:
         self._page.clear_search()
         self._page._navigation.setCurrentRow(self._models_index)
+
+    def show_gemini(self) -> None:
+        self._page.clear_search()
+        self._page._navigation.setCurrentRow(self._gemini_index)
 
     def accept(self) -> None:
         # Flush text editors whose edits commit on focus-out: clicking Close
