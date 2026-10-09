@@ -34,6 +34,7 @@ from labelme import __version__
 from . import _ai_models
 from . import _automation
 from . import _config
+from . import _gemini_key
 from . import _utils
 from ._label_file import LABEL_FILE_SUFFIX
 from ._label_file import Annotation
@@ -1572,6 +1573,13 @@ class MainWindow(QtWidgets.QMainWindow):
     def _get_text_session(
         self, model_name: str, /
     ) -> _automation.OsamSession | _automation.GeminiSession | None:
+        if _ai_models.is_cloud_model(model_name=model_name):
+            api_key = _gemini_key.get_gemini_api_key(settings=self._window_state)
+            if api_key is None:
+                return None
+            return _automation.GeminiSession(
+                model=self._config["ai"]["gemini_model"], api_key=api_key
+            )
         if (
             self._text_osam_session is None
             or self._text_osam_session.model_name != model_name
@@ -1598,6 +1606,10 @@ class MainWindow(QtWidgets.QMainWindow):
                 % (job.model_display_name, job.shape_type),
             )
             return
+        if isinstance(outcome, _automation.GeminiError):
+            logger.warning("Gemini request failed: {}", type(outcome).__name__)
+            self._on_inference_failed(self._describe_gemini_error(outcome))
+            return
         if isinstance(outcome, BaseException):
             logger.opt(exception=outcome).error("AI text inference failed")
             self._on_inference_failed(f"{type(outcome).__name__}: {outcome}")
@@ -1610,6 +1622,15 @@ class MainWindow(QtWidgets.QMainWindow):
             return
         apply_default_flags(shapes=shapes, label_flags=self._config["label_flags"])
         self._commit_shapes([*self._canvas_widgets.canvas.shapes, *shapes])
+
+    def _describe_gemini_error(self, error: _automation.GeminiError, /) -> str:
+        if isinstance(error, _automation.GeminiAuthError):
+            return self.tr("Gemini rejected the API key. Check it in Settings.")
+        if isinstance(error, _automation.GeminiQuotaError):
+            return self.tr("Gemini quota reached. Try again later.")
+        if isinstance(error, _automation.GeminiNetworkError):
+            return self.tr("Could not reach Gemini.")
+        return self.tr("Gemini returned an unexpected response.")
 
     def reset_state(self) -> None:
         self._auto_save_path = None
@@ -3075,10 +3096,44 @@ class MainWindow(QtWidgets.QMainWindow):
         return flags
 
     def _ensure_ai_model_ready(self, model_name: str, /) -> bool:
+        if _ai_models.is_cloud_model(model_name=model_name):
+            return self._ensure_gemini_ready()
         if model_name and self._model_manager.is_ready(model_name):
             return True
         self._open_models()
         return False
+
+    def _ensure_gemini_ready(self) -> bool:
+        if _gemini_key.get_gemini_api_key(settings=self._window_state) is None:
+            answer = QtWidgets.QMessageBox.information(
+                self,
+                self.tr("Gemini API Key Required"),
+                self.tr("Set your Gemini API key in Settings to use Gemini."),
+                QtWidgets.QMessageBox.StandardButton.Open
+                | QtWidgets.QMessageBox.StandardButton.Cancel,
+            )
+            if answer == QtWidgets.QMessageBox.StandardButton.Open:
+                self._open_gemini_settings()
+            return False
+        if not _gemini_key.has_accepted_gemini_privacy(settings=self._window_state):
+            answer = QtWidgets.QMessageBox.question(
+                self,
+                self.tr("Send Image to Google?"),
+                self.tr(
+                    "Gemini runs in the cloud: the current image and the prompt "
+                    "are sent to Google each time you run it. Continue?"
+                ),
+                QtWidgets.QMessageBox.StandardButton.Yes
+                | QtWidgets.QMessageBox.StandardButton.No,
+                QtWidgets.QMessageBox.StandardButton.No,
+            )
+            if answer != QtWidgets.QMessageBox.StandardButton.Yes:
+                return False
+            _gemini_key.accept_gemini_privacy(settings=self._window_state)
+        return True
+
+    def _open_gemini_settings(self) -> None:
+        self._open_settings()
 
     def _refresh_model_availability(self) -> None:
         available = {
@@ -3087,7 +3142,9 @@ class MainWindow(QtWidgets.QMainWindow):
             if self._model_manager.is_ready(name)
         }
         self._ai_annotation.set_available_models(available=available)
-        self._ai_text.set_available_models(available=available)
+        self._ai_text.set_available_models(
+            available=available | _ai_models.CLOUD_AI_TEXT_MODEL_NAMES
+        )
         self._ai_annotation.set_point_prompt_mode(
             enabled=self._ai_annotation.is_point_prompt_mode
         )
