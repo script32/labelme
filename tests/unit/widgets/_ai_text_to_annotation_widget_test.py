@@ -40,3 +40,13 @@ def test_focusable_controls_expose_accessible_names(*, qtbot: QtBot) -> None:
     assert interface.text(QtGui.QAccessible.Text.Description) == widget.tr(
         "Text-to-annotation model"
     )
+
+
+def test_set_running_disables_only_the_run_button(*, qtbot: QtBot) -> None:
+    widget = AiTextToAnnotationWidget(on_submit=lambda _checked: None)
+    qtbot.addWidget(widget)
+    widget.set_running(True)
+    assert not widget._run_button.isEnabled()
+    assert widget._text_input.isEnabled()
+    widget.set_running(False)
+    assert widget._run_button.isEnabled()

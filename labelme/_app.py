@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import copy
+import dataclasses
 import enum
 import functools
 import math
@@ -53,6 +54,7 @@ from ._shape import can_merge_shapes
 from ._shape import merge_masks
 from ._shape_clipboard import ShapeClipboard
 from ._shape_color import resolve_shape_color
+from ._text_prompt_runner import TextPromptRunner
 from ._widgets import AiAssistedAnnotationWidget
 from ._widgets import AiTextToAnnotationWidget
 from ._widgets import BrightnessContrastDialog
@@ -81,6 +83,15 @@ class _ZoomMode(enum.Enum):
 
 
 _TextToAnnotationCreateMode: TypeAlias = Literal["polygon", "rectangle"]
+
+
+@dataclasses.dataclass(frozen=True)
+class _TextPromptJob:
+    image_path: str | None
+    model_display_name: str
+    shape_type: str
+
+
 _AI_CREATE_MODES: Final[tuple[str, ...]] = (
     "ai_points_to_shape",
     "ai_box_to_shape",
@@ -330,6 +341,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self._save_revision = 0
         self._auto_save_path: str | None = None
         self._save_writer = SaveWriter(parent=self)
+        self._text_prompt_runner = TextPromptRunner(parent=self)
+        self._text_prompt_runner.finished.connect(self._on_text_prompt_finished)
         self._save_writer.finished.connect(self._on_save_finished)
         self._model_manager = ModelManager(parent=self)
         self._model_manager.changed.connect(self._refresh_model_availability)
@@ -1508,6 +1521,8 @@ class MainWindow(QtWidgets.QMainWindow):
         self.statusBar().showMessage(message, delay)
 
     def _submit_ai_prompt(self, _: bool, /) -> None:  # noqa: FBT001 -- submit callback receives the Qt clicked flag
+        if self._text_prompt_runner.is_busy:
+            return
         create_mode = self._canvas_widgets.canvas.create_mode
         shape_type = _resolve_text_annotation_shape_type(
             create_mode=create_mode,
@@ -1522,30 +1537,55 @@ class MainWindow(QtWidgets.QMainWindow):
         model_name: str = self._ai_text.get_model_name()
         if not self._ensure_ai_model_ready(model_name):
             return
+        session = self._get_text_session(model_name)
+        if session is None:
+            return
+
+        job = _TextPromptJob(
+            image_path=self._image_path,
+            model_display_name=self._ai_text.get_model_display_name(),
+            shape_type=shape_type,
+        )
+        run = functools.partial(
+            _automation.propose_shapes_from_texts,
+            session=session,
+            image=_utils.img_qt_to_rgb_arr(self._image),
+            image_id=str(hash(self._image_path)),
+            texts=texts,
+            shape_type=shape_type,
+            existing_shapes=list(self._canvas_widgets.canvas.shapes),
+            iou_threshold=self._ai_text.get_iou_threshold(),
+            score_threshold=self._ai_text.get_score_threshold(),
+            image_size=(
+                None
+                if self._config["canvas"]["allow_out_of_bounds_points"]
+                else (self._image.width(), self._image.height())
+            ),
+            polygon_detail=self._config["mask_polygonization"]["detail"],
+        )
+        self._ai_text.set_running(True)
+        self.show_status_message(
+            self.tr("Running %s…") % job.model_display_name, delay=0
+        )
+        self._text_prompt_runner.submit(job=job, run=run)
+
+    def _get_text_session(
+        self, model_name: str, /
+    ) -> _automation.OsamSession | _automation.GeminiSession | None:
         if (
             self._text_osam_session is None
             or self._text_osam_session.model_name != model_name
         ):
             self._text_osam_session = _automation.OsamSession(model_name=model_name)
+        return self._text_osam_session
 
-        try:
-            shapes = _automation.propose_shapes_from_texts(
-                session=self._text_osam_session,
-                image=_utils.img_qt_to_rgb_arr(self._image),
-                image_id=str(hash(self._image_path)),
-                texts=texts,
-                shape_type=shape_type,
-                existing_shapes=self._canvas_widgets.canvas.shapes,
-                iou_threshold=self._ai_text.get_iou_threshold(),
-                score_threshold=self._ai_text.get_score_threshold(),
-                image_size=(
-                    None
-                    if self._config["canvas"]["allow_out_of_bounds_points"]
-                    else (self._image.width(), self._image.height())
-                ),
-                polygon_detail=self._config["mask_polygonization"]["detail"],
-            )
-        except _automation.MaskOutputUnavailableError:
+    def _on_text_prompt_finished(self, job: _TextPromptJob, outcome: object, /) -> None:
+        self._ai_text.set_running(False)
+        self.statusBar().clearMessage()
+        if job.image_path != self._image_path:
+            logger.info("Discarding AI text result for an image that is no longer open")
+            return
+        if isinstance(outcome, _automation.MaskOutputUnavailableError):
             QtWidgets.QMessageBox.warning(
                 self,
                 self.tr("Mask Output Unavailable"),
@@ -1555,14 +1595,19 @@ class MainWindow(QtWidgets.QMainWindow):
                     "Switch the AI Text-to-Annotation model to 'SAM3 (smart)', "
                     "or set the output format to 'Rectangle'."
                 )
-                % (self._ai_text.get_model_display_name(), shape_type),
+                % (job.model_display_name, job.shape_type),
             )
             return
-        except Exception as e:
-            logger.opt(exception=e).error("AI text inference failed")
-            self._on_inference_failed(f"{type(e).__name__}: {e}")
+        if isinstance(outcome, BaseException):
+            logger.opt(exception=outcome).error("AI text inference failed")
+            self._on_inference_failed(f"{type(outcome).__name__}: {outcome}")
             return
-
+        shapes = cast(list[Shape], outcome)
+        if not shapes:
+            self.show_status_message(
+                self.tr("%s found no objects.") % job.model_display_name, delay=5000
+            )
+            return
         apply_default_flags(shapes=shapes, label_flags=self._config["label_flags"])
         self._commit_shapes([*self._canvas_widgets.canvas.shapes, *shapes])
 
@@ -2568,6 +2613,7 @@ class MainWindow(QtWidgets.QMainWindow):
             a0.ignore()
             return
         self._save_writer.shutdown()
+        self._text_prompt_runner.shutdown()
         self._window_state.setValue(WINDOW_SIZE_KEY, self.size())
         self._window_state.setValue(WINDOW_POSITION_KEY, self.pos())
         self._window_state.setValue(WINDOW_LAYOUT_KEY, self.saveState())

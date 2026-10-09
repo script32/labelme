@@ -126,7 +126,8 @@ def _run_text_prompt(
             break
 
     win._submit_ai_prompt(False)  # noqa: FBT003 -- the slot takes the Qt clicked flag positionally
-    qtbot.wait(100)
+    qtbot.waitUntil(lambda: not win._text_prompt_runner.is_busy, timeout=5000)
+    qtbot.wait(50)
 
 
 @pytest.mark.gui

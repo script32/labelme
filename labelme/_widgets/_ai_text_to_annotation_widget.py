@@ -19,6 +19,7 @@ class AiTextToAnnotationWidget(QtWidgets.QWidget):
     _default_iou_threshold: float = 0.5
 
     _text_input: QtWidgets.QLineEdit
+    _run_button: QtWidgets.QToolButton
     _model_combo: ModelPicker
     _score_spinbox: QtWidgets.QDoubleSpinBox
     _iou_spinbox: QtWidgets.QDoubleSpinBox
@@ -73,6 +74,7 @@ class AiTextToAnnotationWidget(QtWidgets.QWidget):
         run_button.setFixedHeight(24)
         run_button.setCursor(QtCore.Qt.CursorShape.PointingHandCursor)
         run_button.clicked.connect(on_submit)
+        self._run_button = run_button
         grid.addWidget(run_button, 0, 1)
 
         settings_layout = QtWidgets.QHBoxLayout()
@@ -150,6 +152,10 @@ class AiTextToAnnotationWidget(QtWidgets.QWidget):
 
     def get_iou_threshold(self) -> float:
         return self._iou_spinbox.value()
+
+    def set_running(self, running: bool, /) -> None:  # noqa: FBT001 -- mirrors setEnabled
+        self._run_button.setEnabled(not running)
+        self._run_button.setText(self.tr("Running…") if running else self.tr("Run"))
 
     def setEnabled(self, a0: bool, /) -> None:  # noqa: FBT001 -- QWidget.setEnabled override
         self._body.setEnabled(a0)
