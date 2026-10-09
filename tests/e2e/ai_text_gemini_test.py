@@ -7,6 +7,7 @@ import urllib.error
 from pathlib import Path
 from typing import TYPE_CHECKING
 from typing import Any
+from typing import Final
 
 import pytest
 from PySide6 import QtWidgets
@@ -23,6 +24,8 @@ if TYPE_CHECKING:
 
 
 class _FakePost:
+    calls: int
+
     def __init__(
         self,
         *,
@@ -41,6 +44,7 @@ class _FakePost:
         _headers: dict[str, str],
         _body: bytes,
         _timeout: float,
+        /,
     ) -> bytes:
         self.calls += 1
         if self._gate is not None:
@@ -60,7 +64,7 @@ class _FakePost:
         ).encode()
 
 
-_PERSON = {
+_PERSON: Final[dict[str, Any]] = {
     "box_2d": [100, 100, 600, 500],
     "label": "person",
     "mask": [[100, 100], [500, 100], [500, 600], [100, 600]],
@@ -68,7 +72,7 @@ _PERSON = {
 
 
 def _open(
-    main_win: MainWinFactory, qtbot: QtBot, data_path: Path, tmp_path: Path
+    main_win: MainWinFactory, qtbot: QtBot, data_path: Path, tmp_path: Path, /
 ) -> MainWindow:
     win = main_win(
         file_or_dir=str(data_path / "raw/2011_000003.jpg"),
@@ -79,19 +83,15 @@ def _open(
     return win
 
 
-def _configure(
-    win: MainWindow, *, key: str | None = "test-key", privacy: bool = True
-) -> None:
+def _configure(win: MainWindow, /, *, key: str | None, privacy: bool) -> None:
     _gemini_key.set_gemini_api_key(settings=win._window_state, key=key)
     if privacy:
         _gemini_key.accept_gemini_privacy(settings=win._window_state)
 
 
-def _run(
-    win: MainWindow, qtbot: QtBot, *, create_mode: str, text: str = "person"
-) -> None:
+def _run(win: MainWindow, qtbot: QtBot, /, *, create_mode: str) -> None:
     win._switch_canvas_mode(edit=False, create_mode=create_mode)
-    win._ai_text._text_input.setText(text)
+    win._ai_text._text_input.setText("person")
     win._ai_text.set_model_name(model_name="gemini")
     win._submit_ai_prompt(False)  # noqa: FBT003
     qtbot.waitUntil(lambda: not win._text_prompt_runner.is_busy, timeout=5000)
@@ -101,6 +101,7 @@ def _run(
 @pytest.mark.gui
 @pytest.mark.parametrize("create_mode", ["rectangle", "polygon"])
 def test_gemini_creates_shapes(
+    *,
     main_win: MainWinFactory,
     qtbot: QtBot,
     data_path: Path,
@@ -111,7 +112,7 @@ def test_gemini_creates_shapes(
     fake = _FakePost(entries=[_PERSON])
     monkeypatch.setattr(_gemini_session, "_urllib_post", fake)
     win = _open(main_win, qtbot, data_path, tmp_path)
-    _configure(win)
+    _configure(win, key="test-key", privacy=True)
     _run(win, qtbot, create_mode=create_mode)
     shapes = win._canvas_widgets.canvas.shapes
     assert fake.calls == 1
@@ -121,6 +122,7 @@ def test_gemini_creates_shapes(
 
 @pytest.mark.gui
 def test_gemini_without_key_asks_for_settings_and_sends_nothing(
+    *,
     main_win: MainWinFactory,
     qtbot: QtBot,
     data_path: Path,
@@ -137,7 +139,7 @@ def test_gemini_without_key_asks_for_settings_and_sends_nothing(
         or QtWidgets.QMessageBox.StandardButton.Cancel,
     )
     win = _open(main_win, qtbot, data_path, tmp_path)
-    _configure(win, key=None)
+    _configure(win, key=None, privacy=True)
     _run(win, qtbot, create_mode="rectangle")
     assert prompts == ["Gemini API Key Required"]
     assert fake.calls == 0
@@ -146,6 +148,7 @@ def test_gemini_without_key_asks_for_settings_and_sends_nothing(
 
 @pytest.mark.gui
 def test_gemini_privacy_prompt_once_and_decline_sends_nothing(
+    *,
     main_win: MainWinFactory,
     qtbot: QtBot,
     data_path: Path,
@@ -168,18 +171,19 @@ def test_gemini_privacy_prompt_once_and_decline_sends_nothing(
 
     monkeypatch.setattr(QtWidgets.QMessageBox, "question", question)
     win = _open(main_win, qtbot, data_path, tmp_path)
-    _configure(win, privacy=False)
+    _configure(win, key="test-key", privacy=False)
     _run(win, qtbot, create_mode="rectangle")
     assert fake.calls == 0
     _run(win, qtbot, create_mode="rectangle")
     assert fake.calls == 1
-    _run(win, qtbot, create_mode="rectangle", text="person")
+    _run(win, qtbot, create_mode="rectangle")
     assert asked == ["Send Image to Google?", "Send Image to Google?"]
     assert fake.calls == 2
 
 
 @pytest.mark.gui
 def test_gemini_auth_error_keeps_annotations_and_explains(
+    *,
     main_win: MainWinFactory,
     qtbot: QtBot,
     data_path: Path,
@@ -191,7 +195,7 @@ def test_gemini_auth_error_keeps_annotations_and_explains(
     )
     monkeypatch.setattr(_gemini_session, "_urllib_post", _FakePost(error=error))
     win = _open(main_win, qtbot, data_path, tmp_path)
-    _configure(win)
+    _configure(win, key="test-key", privacy=True)
     _run(win, qtbot, create_mode="rectangle")
     assert win._canvas_widgets.canvas.shapes == []
     assert "Gemini rejected the API key" in win.statusBar().currentMessage()
@@ -200,6 +204,7 @@ def test_gemini_auth_error_keeps_annotations_and_explains(
 
 @pytest.mark.gui
 def test_gemini_result_discarded_after_image_switch(
+    *,
     main_win: MainWinFactory,
     qtbot: QtBot,
     data_path: Path,
@@ -211,7 +216,7 @@ def test_gemini_result_discarded_after_image_switch(
         _gemini_session, "_urllib_post", _FakePost(entries=[_PERSON], gate=gate)
     )
     win = _open(main_win, qtbot, data_path, tmp_path)
-    _configure(win)
+    _configure(win, key="test-key", privacy=True)
     win._switch_canvas_mode(edit=False, create_mode="rectangle")
     win._ai_text._text_input.setText("person")
     win._ai_text.set_model_name(model_name="gemini")

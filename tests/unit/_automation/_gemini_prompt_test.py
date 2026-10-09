@@ -102,6 +102,6 @@ def test_parse_falls_back_to_box_mask_when_polygon_missing_or_invalid() -> None:
 
 
 @pytest.mark.parametrize("text", ["not json", '{"box_2d": [0, 0, 1, 1]}'])
-def test_parse_rejects_non_list_responses(text: str) -> None:
+def test_parse_rejects_non_list_responses(*, text: str) -> None:
     with pytest.raises(GeminiResponseError):
         parse_response(text=text, texts=["nut"], image_size=(10, 10), want_masks=False)

@@ -10,11 +10,11 @@ from labelme import _gemini_key
 from labelme._widgets._gemini_key_widget import GeminiKeyWidget
 
 
-def _settings(tmp_path: Path) -> QtCore.QSettings:
+def _settings(tmp_path: Path, /) -> QtCore.QSettings:
     return QtCore.QSettings(str(tmp_path / "s.ini"), QtCore.QSettings.Format.IniFormat)
 
 
-def test_key_field_is_masked_and_prefilled(qtbot: QtBot, tmp_path: Path) -> None:
+def test_key_field_is_masked_and_prefilled(*, qtbot: QtBot, tmp_path: Path) -> None:
     settings = _settings(tmp_path)
     _gemini_key.set_gemini_api_key(settings=settings, key="abc")
     widget = GeminiKeyWidget(settings=settings)
@@ -23,7 +23,7 @@ def test_key_field_is_masked_and_prefilled(qtbot: QtBot, tmp_path: Path) -> None
     assert widget._key_edit.text() == "abc"
 
 
-def test_typing_saves_and_clear_removes(qtbot: QtBot, tmp_path: Path) -> None:
+def test_typing_saves_and_clear_removes(*, qtbot: QtBot, tmp_path: Path) -> None:
     settings = _settings(tmp_path)
     widget = GeminiKeyWidget(settings=settings)
     qtbot.addWidget(widget)

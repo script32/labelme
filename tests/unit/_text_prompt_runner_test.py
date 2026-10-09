@@ -9,7 +9,7 @@ from labelme._text_prompt_runner import TextPromptRunner
 
 
 # Each test keeps `parent` in a local so the runner is not destroyed mid-test.
-def test_runner_reports_result(qtbot: QtBot) -> None:
+def test_runner_reports_result(*, qtbot: QtBot) -> None:
     parent = QtCore.QObject()
     runner = TextPromptRunner(parent=parent)
     with qtbot.waitSignal(runner.finished) as blocker:
@@ -18,7 +18,7 @@ def test_runner_reports_result(qtbot: QtBot) -> None:
     assert not runner.is_busy
 
 
-def test_runner_reports_exceptions(qtbot: QtBot) -> None:
+def test_runner_reports_exceptions(*, qtbot: QtBot) -> None:
     parent = QtCore.QObject()
     runner = TextPromptRunner(parent=parent)
     error = RuntimeError("boom")
@@ -31,7 +31,7 @@ def test_runner_reports_exceptions(qtbot: QtBot) -> None:
     assert blocker.args[1] is error
 
 
-def test_runner_rejects_submit_while_busy(qtbot: QtBot) -> None:
+def test_runner_rejects_submit_while_busy(*, qtbot: QtBot) -> None:
     parent = QtCore.QObject()
     runner = TextPromptRunner(parent=parent)
     release = threading.Event()

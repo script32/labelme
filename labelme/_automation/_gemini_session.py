@@ -24,18 +24,11 @@ from ._gemini_prompt import parse_response
 GEMINI_ENDPOINT: Final[str] = (
     "https://generativelanguage.googleapis.com/v1beta/interactions"
 )
-# Gemini answers in 0-1000 normalized coordinates, so downscaling the upload
-# does not change the boxes it returns; it only cuts upload size and latency.
-_MAX_IMAGE_SIDE: Final[int] = 1536
-
-_AUTH_ERROR_CODES: Final[frozenset[int]] = frozenset({401, 403})
-_QUOTA_ERROR_CODE: Final[int] = 429
-
 Post = Callable[[str, dict[str, str], bytes, float], bytes]
 
 
 def _urllib_post(
-    url: str, headers: dict[str, str], body: bytes, timeout: float
+    url: str, headers: dict[str, str], body: bytes, timeout: float, /
 ) -> bytes:
     request = urllib.request.Request(url, data=body, headers=headers, method="POST")
     with urllib.request.urlopen(request, timeout=timeout) as response:
@@ -96,12 +89,14 @@ class GeminiSession:
             }
         ).encode()
         headers = {"Content-Type": "application/json", "x-goog-api-key": self._api_key}
+        AUTH_ERROR_CODES: Final[frozenset[int]] = frozenset({401, 403})
+        QUOTA_ERROR_CODE: Final[int] = 429
         try:
             raw = self._post(GEMINI_ENDPOINT, headers, body, self._timeout)
         except urllib.error.HTTPError as e:
-            if e.code in _AUTH_ERROR_CODES:
+            if e.code in AUTH_ERROR_CODES:
                 raise GeminiAuthError("Gemini rejected the API key") from None
-            if e.code == _QUOTA_ERROR_CODE:
+            if e.code == QUOTA_ERROR_CODE:
                 raise GeminiQuotaError("Gemini quota exceeded") from None
             raise GeminiNetworkError(f"Gemini returned HTTP {e.code}") from None
         except (urllib.error.URLError, TimeoutError, OSError):
@@ -113,15 +108,18 @@ class GeminiSession:
         )
 
 
-def _encode_jpeg(image: NDArray[np.uint8]) -> str:
+def _encode_jpeg(image: NDArray[np.uint8], /) -> str:
+    # Gemini answers in 0-1000 normalized coordinates, so downscaling the upload
+    # does not change the boxes it returns; it only cuts upload size and latency.
+    MAX_IMAGE_SIDE: Final[int] = 1536
     pil_image = PIL.Image.fromarray(image).convert("RGB")
-    pil_image.thumbnail((_MAX_IMAGE_SIDE, _MAX_IMAGE_SIDE))
+    pil_image.thumbnail((MAX_IMAGE_SIDE, MAX_IMAGE_SIDE))
     buffer = io.BytesIO()
     pil_image.save(buffer, format="JPEG", quality=90)
     return base64.b64encode(buffer.getvalue()).decode("ascii")
 
 
-def _extract_output_text(raw: bytes) -> str:
+def _extract_output_text(raw: bytes, /) -> str:
     try:
         payload = json.loads(raw)
     except json.JSONDecodeError as e:

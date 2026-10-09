@@ -5,15 +5,17 @@ from typing import Any
 
 
 class FakePost:
+    calls: list[tuple[str, dict[str, str], dict[str, Any], float]]
+
     def __init__(
         self, *, response: bytes | None = None, error: BaseException | None = None
     ) -> None:
-        self.calls: list[tuple[str, dict[str, str], dict[str, Any], float]] = []
+        self.calls = []
         self._response = response
         self._error = error
 
     def __call__(
-        self, url: str, headers: dict[str, str], body: bytes, timeout: float
+        self, url: str, headers: dict[str, str], body: bytes, timeout: float, /
     ) -> bytes:
         self.calls.append((url, headers, json.loads(body), timeout))
         if self._error is not None:
@@ -22,7 +24,7 @@ class FakePost:
         return self._response
 
 
-def interaction(text: str) -> bytes:
+def interaction(text: str, /) -> bytes:
     return json.dumps(
         {
             "steps": [

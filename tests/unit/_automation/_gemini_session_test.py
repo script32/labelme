@@ -4,6 +4,7 @@ import base64
 import email.message
 import io
 import urllib.error
+from typing import Final
 
 import numpy as np
 import PIL.Image
@@ -20,10 +21,10 @@ from labelme._automation._gemini_session import GeminiSession
 from ._gemini_fakes import FakePost
 from ._gemini_fakes import interaction
 
-_KEY = "secret-key-123"
+_KEY: Final = "secret-key-123"
 
 
-def _session(post: FakePost) -> GeminiSession:
+def _session(post: FakePost, /) -> GeminiSession:
     return GeminiSession(model="gemini-3.8-flash", api_key=_KEY, post=post)
 
 
@@ -96,7 +97,7 @@ def test_detect_downscales_large_images_but_keeps_original_coordinates() -> None
     ],
 )
 def test_detect_maps_transport_errors(
-    error: BaseException, expected: type[GeminiError]
+    *, error: BaseException, expected: type[GeminiError]
 ) -> None:
     with pytest.raises(expected) as exc_info:
         _session(FakePost(error=error)).detect(
@@ -106,7 +107,7 @@ def test_detect_maps_transport_errors(
 
 
 @pytest.mark.parametrize("raw", [b"not json", b"[]", b'{"steps": []}'])
-def test_detect_rejects_responses_without_text_output(raw: bytes) -> None:
+def test_detect_rejects_responses_without_text_output(*, raw: bytes) -> None:
     with pytest.raises(GeminiResponseError):
         _session(FakePost(response=raw)).detect(
             image=np.zeros((10, 10, 3), dtype=np.uint8), texts=["nut"], want_masks=False

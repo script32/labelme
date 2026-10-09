@@ -13,9 +13,6 @@ from ._gemini_errors import GeminiResponseError
 
 # Gemini normalizes every coordinate to this range, independent of image size.
 _NORMALIZED_MAX: Final[float] = 1000.0
-_BOX_LENGTH: Final[int] = 4  # [ymin, xmin, ymax, xmax]
-_MIN_POLYGON_POINTS: Final[int] = 3
-_POINT_DIMENSIONS: Final[int] = 2
 _FENCE_RE: Final = re.compile(r"^```(?:json)?\s*(.*?)\s*```$", re.DOTALL)
 
 
@@ -110,8 +107,9 @@ def parse_response(
 
 
 def _to_pixel_box(
-    value: object, *, width: int, height: int
+    value: object, /, *, width: int, height: int
 ) -> tuple[int, int, int, int] | None:
+    BOX_LENGTH: Final[int] = 4  # [ymin, xmin, ymax, xmax]
     if not isinstance(value, list):
         return None
     numbers = [
@@ -119,7 +117,7 @@ def _to_pixel_box(
         for v in value
         if isinstance(v, int | float) and not isinstance(v, bool)
     ]
-    if len(value) != _BOX_LENGTH or len(numbers) != _BOX_LENGTH:
+    if len(value) != BOX_LENGTH or len(numbers) != BOX_LENGTH:
         return None
     ymin, xmin, ymax, xmax = numbers
 
@@ -134,19 +132,21 @@ def _to_pixel_box(
 
 
 def _rasterize_mask(
-    value: object, *, box: tuple[int, int, int, int], width: int, height: int
+    value: object, /, *, box: tuple[int, int, int, int], width: int, height: int
 ) -> NDArray[np.bool_]:
+    MIN_POLYGON_POINTS: Final[int] = 3
+    POINT_DIMENSIONS: Final[int] = 2
     # The shape builders expect masks cropped to the integer box (inclusive).
     x1, y1, x2, y2 = box
     shape = (y2 - y1 + 1, x2 - x1 + 1)
     box_mask = np.ones(shape, dtype=bool)
-    if not isinstance(value, list) or len(value) < _MIN_POLYGON_POINTS:
+    if not isinstance(value, list) or len(value) < MIN_POLYGON_POINTS:
         return box_mask
     try:
         points = np.asarray(value, dtype=np.float64)
     except (TypeError, ValueError):
         return box_mask
-    if points.ndim != _POINT_DIMENSIONS or points.shape[1] != _POINT_DIMENSIONS:
+    if points.ndim != POINT_DIMENSIONS or points.shape[1] != POINT_DIMENSIONS:
         return box_mask
     points = points / _NORMALIZED_MAX * np.array([width, height])
     rows, cols = skimage.draw.polygon(points[:, 1] - y1, points[:, 0] - x1, shape=shape)
