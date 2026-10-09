@@ -34,3 +34,9 @@ def test_privacy_acceptance_persists(*, tmp_path: Path) -> None:
     assert not _gemini_key.has_accepted_gemini_privacy(settings=settings)
     _gemini_key.accept_gemini_privacy(settings=settings)
     assert _gemini_key.has_accepted_gemini_privacy(settings=_settings(tmp_path))
+
+
+def test_api_key_drops_invisible_characters(*, tmp_path: Path) -> None:
+    settings = _settings(tmp_path)
+    _gemini_key.set_gemini_api_key(settings=settings, key="​abc​ def\n")
+    assert _gemini_key.get_gemini_api_key(settings=settings) == "abcdef"

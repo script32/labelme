@@ -229,6 +229,7 @@ class MainWindow(QtWidgets.QMainWindow):
     _config_overrides: dict
 
     _text_osam_session: _automation.OsamSession | None = None
+    _closing: bool = False
     _is_changed: bool = False
     _shape_clipboard: ShapeClipboard
     _zoom_mode: _ZoomMode
@@ -1589,6 +1590,8 @@ class MainWindow(QtWidgets.QMainWindow):
         return self._text_osam_session
 
     def _on_text_prompt_finished(self, job: _TextPromptJob, outcome: object, /) -> None:
+        if self._closing:
+            return
         self._ai_text.set_running(False)
         self.statusBar().clearMessage()
         if job.image_path != self._image_path:
@@ -2634,8 +2637,11 @@ class MainWindow(QtWidgets.QMainWindow):
         if not self._model_manager.shutdown():
             a0.ignore()
             return
-        self._save_writer.shutdown()
+        # Stop text-prompt work first: a result queued during shutdown must not
+        # commit shapes or start an auto-save after the save writer is gone.
+        self._closing = True
         self._text_prompt_runner.shutdown()
+        self._save_writer.shutdown()
         self._window_state.setValue(WINDOW_SIZE_KEY, self.size())
         self._window_state.setValue(WINDOW_POSITION_KEY, self.pos())
         self._window_state.setValue(WINDOW_LAYOUT_KEY, self.saveState())

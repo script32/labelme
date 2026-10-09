@@ -17,8 +17,12 @@ def get_gemini_api_key(*, settings: QtCore.QSettings) -> str | None:
 
 
 def set_gemini_api_key(*, settings: QtCore.QSettings, key: str | None) -> None:
-    if key is not None and key.strip():
-        settings.setValue(_API_KEY, key.strip())
+    # Keys pasted from web pages can carry zero-width or other invisible
+    # characters, which an HTTP header cannot encode.
+    if key is not None:
+        key = "".join(ch for ch in key if ch.isprintable() and not ch.isspace())
+    if key:
+        settings.setValue(_API_KEY, key)
     else:
         settings.remove(_API_KEY)
     settings.sync()

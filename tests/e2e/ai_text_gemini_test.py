@@ -229,3 +229,28 @@ def test_gemini_result_discarded_after_image_switch(
     qtbot.wait(50)
     assert win._canvas_widgets.canvas.shapes == []
     assert win._ai_text._run_button.isEnabled()
+
+
+@pytest.mark.gui
+def test_gemini_result_ignored_after_window_closes(
+    *,
+    main_win: MainWinFactory,
+    qtbot: QtBot,
+    data_path: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    gate = threading.Event()
+    monkeypatch.setattr(
+        _gemini_session, "_urllib_post", _FakePost(entries=[_PERSON], gate=gate)
+    )
+    win = _open(main_win, qtbot, data_path, tmp_path)
+    _configure(win, key="test-key", privacy=True)
+    win._switch_canvas_mode(edit=False, create_mode="rectangle")
+    win._ai_text._text_input.setText("person")
+    win._ai_text.set_model_name(model_name="gemini")
+    win._submit_ai_prompt(False)  # noqa: FBT003
+    gate.set()
+    win.close()
+    qtbot.wait(100)
+    assert win._canvas_widgets.canvas.shapes == []

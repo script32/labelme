@@ -2,6 +2,7 @@ from __future__ import annotations
 
 import base64
 import email.message
+import http.client
 import io
 import urllib.error
 from typing import Final
@@ -117,3 +118,33 @@ def test_detect_rejects_responses_without_text_output(*, raw: bytes) -> None:
 def test_repr_hides_api_key() -> None:
     assert _KEY not in repr(_session(FakePost(response=b"")))
     assert _session(FakePost(response=b"")).model_name == "gemini"
+
+
+@pytest.mark.parametrize(
+    "error",
+    [
+        UnicodeEncodeError("latin-1", "​", 0, 1, "ordinal not in range"),
+        http.client.IncompleteRead(b""),
+        http.client.BadStatusLine("garbage"),
+    ],
+)
+def test_detect_wraps_unexpected_transport_errors_without_leaking_key(
+    *, error: BaseException
+) -> None:
+    with pytest.raises(GeminiNetworkError) as exc_info:
+        _session(FakePost(error=error)).detect(
+            image=np.zeros((10, 10, 3), dtype=np.uint8), texts=["nut"], want_masks=False
+        )
+    # A bare traceback would expose detect()'s locals, including the key header.
+    assert exc_info.value.__suppress_context__
+    assert _KEY not in str(exc_info.value)
+
+
+def test_detect_wraps_unparsable_numbers_as_response_error() -> None:
+    post = FakePost(
+        response=interaction('[{"box_2d": [0, 0, 1e999, 10], "label": "nut"}]')
+    )
+    with pytest.raises(GeminiResponseError):
+        _session(post).detect(
+            image=np.zeros((10, 10, 3), dtype=np.uint8), texts=["nut"], want_masks=False
+        )

@@ -99,13 +99,23 @@ class GeminiSession:
             if e.code == QUOTA_ERROR_CODE:
                 raise GeminiQuotaError("Gemini quota exceeded") from None
             raise GeminiNetworkError(f"Gemini returned HTTP {e.code}") from None
-        except (urllib.error.URLError, TimeoutError, OSError):
+        except Exception:  # noqa: BLE001 -- any transport failure must stay a GeminiError
+            # `from None` drops the original traceback: with loguru's diagnose
+            # mode, it would print this frame's locals, including the key header.
             raise GeminiNetworkError("Could not reach Gemini") from None
-        text = _extract_output_text(raw)
-        logger.debug("Gemini response text: {!r}", text)
-        return parse_response(
-            text=text, texts=texts, image_size=(width, height), want_masks=want_masks
-        )
+        try:
+            text = _extract_output_text(raw)
+            logger.debug("Gemini response text: {!r}", text)
+            return parse_response(
+                text=text,
+                texts=texts,
+                image_size=(width, height),
+                want_masks=want_masks,
+            )
+        except GeminiResponseError:
+            raise
+        except Exception:  # noqa: BLE001 -- malformed numbers must stay a GeminiError
+            raise GeminiResponseError("Gemini returned unusable values") from None
 
 
 def _encode_jpeg(image: NDArray[np.uint8], /) -> str:
