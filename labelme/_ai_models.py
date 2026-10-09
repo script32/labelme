@@ -63,7 +63,21 @@ AI_ASSIST_MODEL_OPTIONS: Final[tuple[AiAssistModelOption, ...]] = (
 AI_TEXT_MODEL_OPTIONS: Final[tuple[tuple[str, str], ...]] = (
     ("sam3:latest", "SAM3 (smart)"),
     ("yoloworld:latest", "YOLO-World (fast)"),
+    ("gemini", "Gemini (cloud)"),
 )
+
+# Cloud models run remotely: nothing to download, but they need an API key.
+CLOUD_AI_TEXT_MODEL_NAMES: Final[frozenset[str]] = frozenset({"gemini"})
+
+LOCAL_AI_TEXT_MODEL_OPTIONS: Final[tuple[tuple[str, str], ...]] = tuple(
+    option
+    for option in AI_TEXT_MODEL_OPTIONS
+    if option[0] not in CLOUD_AI_TEXT_MODEL_NAMES
+)
+
+
+def is_cloud_model(*, model_name: str) -> bool:
+    return model_name in CLOUD_AI_TEXT_MODEL_NAMES
 
 
 def find_ai_assist_model_option(*, model_name: str) -> AiAssistModelOption | None:

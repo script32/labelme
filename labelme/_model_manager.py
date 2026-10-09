@@ -14,7 +14,7 @@ import osam
 from PySide6 import QtCore
 
 from ._ai_models import AI_ASSIST_MODEL_OPTIONS
-from ._ai_models import AI_TEXT_MODEL_OPTIONS
+from ._ai_models import LOCAL_AI_TEXT_MODEL_OPTIONS
 
 
 def _pull_model(
@@ -187,7 +187,7 @@ class ModelManager(QtCore.QObject):
                 (option.model_name, option.display_name)
                 for option in AI_ASSIST_MODEL_OPTIONS
             ]
-            + list(AI_TEXT_MODEL_OPTIONS)
+            + list(LOCAL_AI_TEXT_MODEL_OPTIONS)
         )
         self.errors = {}
         self.queue = []

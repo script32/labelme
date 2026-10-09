@@ -25,7 +25,7 @@ from pytestqt.qtbot import QtBot
 import labelme._app
 from labelme.__main__ import main
 from labelme._ai_models import AI_ASSIST_MODEL_OPTIONS
-from labelme._ai_models import AI_TEXT_MODEL_OPTIONS
+from labelme._ai_models import LOCAL_AI_TEXT_MODEL_OPTIONS
 from labelme._app import MainWindow
 from labelme._widgets._canvas import Canvas
 from labelme._widgets._label_dialog import LabelDialog
@@ -58,7 +58,7 @@ def cached_ai_models(*, session_home: Path, monkeypatch: pytest.MonkeyPatch) -> 
     monkeypatch.setenv("HOME", str(session_home))
     monkeypatch.setenv("USERPROFILE", str(session_home))
     names = {item.model_name for item in AI_ASSIST_MODEL_OPTIONS}
-    names.update(name for name, _ in AI_TEXT_MODEL_OPTIONS)
+    names.update(name for name, _ in LOCAL_AI_TEXT_MODEL_OPTIONS)
     for name in names:
         content = name.encode()
         blob = osam.types.Blob(

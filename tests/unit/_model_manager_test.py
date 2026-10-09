@@ -359,3 +359,8 @@ def test_progress_supports_files_larger_than_two_gibibytes(
     assert manager.progress[2] == 2**33
     manager.cancel(name)
     release.set()
+
+
+def test_manager_excludes_cloud_models(manager: ModelManager) -> None:
+    assert "gemini" not in manager.models
+    assert not manager.is_ready("gemini")
