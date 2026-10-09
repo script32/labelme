@@ -10,6 +10,7 @@ from loguru import logger
 from numpy.typing import NDArray
 
 from .._shape import Shape
+from ._gemini_session import GeminiSession
 from ._geometry import shape_to_xyxy_bbox
 from ._osam_session import OsamSession
 from ._shape_builders import MASK_REQUIRED_SHAPE_TYPES
@@ -26,7 +27,7 @@ class MaskOutputUnavailableError(ValueError):
 
 def propose_shapes_from_texts(
     *,
-    session: OsamSession,
+    session: OsamSession | GeminiSession,
     image: np.ndarray,
     image_id: str,
     texts: list[str],
@@ -38,7 +39,11 @@ def propose_shapes_from_texts(
     polygon_detail: int,
 ) -> list[Shape]:
     boxes, scores, labels, masks = get_bboxes_from_texts(
-        session=session, image=image, image_id=image_id, texts=texts
+        session=session,
+        image=image,
+        image_id=image_id,
+        texts=texts,
+        want_masks=shape_type in MASK_REQUIRED_SHAPE_TYPES,
     )
     if masks is None and len(boxes) > 0 and shape_type in MASK_REQUIRED_SHAPE_TYPES:
         raise MaskOutputUnavailableError(f"{shape_type!r} requires model masks")
@@ -111,8 +116,16 @@ def propose_shapes_from_texts(
 
 
 def get_bboxes_from_texts(
-    *, session: OsamSession, image: np.ndarray, image_id: str, texts: list[str]
+    *,
+    session: OsamSession | GeminiSession,
+    image: np.ndarray,
+    image_id: str,
+    texts: list[str],
+    want_masks: bool = True,
 ) -> tuple[np.ndarray, np.ndarray, np.ndarray, list[NDArray[np.bool_]] | None]:
+    if isinstance(session, GeminiSession):
+        # Gemini only returns masks when asked; asking costs latency and tokens.
+        return session.detect(image=image, texts=texts, want_masks=want_masks)
     logger.debug(
         f"Requesting with model={session.model_name!r}, "
         f"image={(image.shape, image.dtype)}, texts={texts!r}"

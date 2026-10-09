@@ -1,5 +1,11 @@
 from ._ai_assist import AiAssistProposal
 from ._ai_assist import AiAssistSession
+from ._gemini_errors import GeminiAuthError
+from ._gemini_errors import GeminiError
+from ._gemini_errors import GeminiNetworkError
+from ._gemini_errors import GeminiQuotaError
+from ._gemini_errors import GeminiResponseError
+from ._gemini_session import GeminiSession
 from ._geometry import shape_to_xyxy_bbox
 from ._osam_session import OsamSession
 from ._shape_builders import MASK_REQUIRED_SHAPE_TYPES
@@ -19,6 +25,12 @@ __all__ = [
     "AiOutputFormat",
     "AiPromptKind",
     "Detection",
+    "GeminiAuthError",
+    "GeminiError",
+    "GeminiNetworkError",
+    "GeminiQuotaError",
+    "GeminiResponseError",
+    "GeminiSession",
     "MaskOutputUnavailableError",
     "OsamSession",
     "assign_available_group_ids",

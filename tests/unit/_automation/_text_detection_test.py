@@ -7,11 +7,16 @@ import osam
 import pytest
 from numpy.typing import NDArray
 
+from labelme._automation import AiOutputFormat
+from labelme._automation import GeminiSession
 from labelme._automation._text_detection import MaskOutputUnavailableError
 from labelme._automation._text_detection import get_bboxes_from_texts
 from labelme._automation._text_detection import nms_bboxes
 from labelme._automation._text_detection import propose_shapes_from_texts
 from labelme._shape import Shape
+
+from ._gemini_fakes import FakePost
+from ._gemini_fakes import interaction
 
 
 class _FakeOsamSession:
@@ -247,3 +252,41 @@ def test_text_proposal_rejects_maskless_detections_for_mask_output() -> None:
             image_size=(4, 4),
             polygon_detail=80,
         )
+
+
+@pytest.mark.parametrize(
+    ("shape_type", "expect_mask_request"),
+    [("rectangle", False), ("polygon", True)],
+)
+def test_propose_shapes_from_texts_with_gemini_session(
+    *, shape_type: AiOutputFormat, expect_mask_request: bool
+) -> None:
+    post = FakePost(
+        response=interaction(
+            json.dumps(
+                [
+                    {
+                        "box_2d": [100, 100, 600, 600],
+                        "label": "nut",
+                        "mask": [[100, 100], [600, 100], [600, 600], [100, 600]],
+                    }
+                ]
+            )
+        )
+    )
+    shapes = propose_shapes_from_texts(
+        session=GeminiSession(model="m", api_key="k", post=post),
+        image=np.zeros((200, 200, 3), dtype=np.uint8),
+        image_id="img",
+        texts=["nut"],
+        shape_type=shape_type,
+        existing_shapes=[],
+        iou_threshold=0.5,
+        score_threshold=0.1,
+        image_size=(200, 200),
+        polygon_detail=60,
+    )
+    assert [shape.label for shape in shapes] == ["nut"]
+    assert shapes[0].shape_type == shape_type
+    prompt = post.calls[0][2]["input"][0]["text"]
+    assert ("mask" in prompt) is expect_mask_request

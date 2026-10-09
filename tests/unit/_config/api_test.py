@@ -551,3 +551,19 @@ def test_load_config_rejects_invalid_shape_color(
 def test_reject_malformed_shape_flag_rules(*, value: object) -> None:
     with pytest.raises(ValueError, match="label_flags must map"):
         _config.load_config(config_file=None, config_overrides={"label_flags": value})
+
+
+@pytest.mark.parametrize("value", ["", "   ", 3, None])
+def test_load_config_rejects_invalid_gemini_model(
+    *, tmp_path: Path, value: object
+) -> None:
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text(f"ai:\n  gemini_model: {json.dumps(value)}\n")
+
+    with pytest.raises(ValueError, match=r"ai\.gemini_model must be a non-empty"):
+        _config.load_config(config_file=config_file, config_overrides={})
+
+
+def test_load_config_defaults_gemini_model() -> None:
+    config = _config.load_config(config_file=None, config_overrides={})
+    assert config["ai"]["gemini_model"] == "gemini-3.8-flash"
