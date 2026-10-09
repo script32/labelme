@@ -105,3 +105,23 @@ def test_parse_falls_back_to_box_mask_when_polygon_missing_or_invalid() -> None:
 def test_parse_rejects_non_list_responses(*, text: str) -> None:
     with pytest.raises(GeminiResponseError):
         parse_response(text=text, texts=["nut"], image_size=(10, 10), want_masks=False)
+
+
+def test_parse_reads_mask_points_as_y_x_like_box_2d() -> None:
+    # Real Gemini responses list mask points as [y, x], matching box_2d's order.
+    left_half = [[0, 0], [1000, 0], [1000, 500], [0, 500]]
+    text = json.dumps(
+        [{"box_2d": [0, 0, 1000, 1000], "label": "nut", "mask": left_half}]
+    )
+    _, _, _, masks = parse_response(
+        text=text, texts=["nut"], image_size=(100, 200), want_masks=True
+    )
+    assert masks is not None
+    mask = masks[0]
+    assert mask.shape == (200, 100)
+    assert mask[:, :45].all()
+    assert not mask[:, 55:].any()
+
+
+def test_build_prompt_asks_mask_points_in_y_x_order() -> None:
+    assert "[[y, x], ...]" in build_prompt(texts=["nut"], want_masks=True)

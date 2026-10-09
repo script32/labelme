@@ -21,7 +21,7 @@ def build_prompt(*, texts: list[str], want_masks: bool) -> str:
     if want_masks:
         fields = (
             '"box_2d" as [ymin, xmin, ymax, xmax], "mask" as a polygon '
-            '[[x, y], ...] outlining the object, and "label"'
+            '[[y, x], ...] outlining the object, and "label"'
         )
     else:
         fields = '"box_2d" as [ymin, xmin, ymax, xmax] and "label"'
@@ -148,8 +148,9 @@ def _rasterize_mask(
         return box_mask
     if points.ndim != POINT_DIMENSIONS or points.shape[1] != POINT_DIMENSIONS:
         return box_mask
-    points = points / _NORMALIZED_MAX * np.array([width, height])
-    rows, cols = skimage.draw.polygon(points[:, 1] - y1, points[:, 0] - x1, shape=shape)
+    # Gemini lists mask points as [y, x], the same order as box_2d.
+    points = points / _NORMALIZED_MAX * np.array([height, width])
+    rows, cols = skimage.draw.polygon(points[:, 0] - y1, points[:, 1] - x1, shape=shape)
     mask = np.zeros(shape, dtype=bool)
     mask[rows, cols] = True
     return mask if mask.any() else box_mask
