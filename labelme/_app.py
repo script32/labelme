@@ -1634,6 +1634,10 @@ class MainWindow(QtWidgets.QMainWindow):
             return self.tr("Gemini quota reached. Try again later.")
         if isinstance(error, _automation.GeminiNetworkError):
             return self.tr("Could not reach Gemini.")
+        if isinstance(error, _automation.GeminiUnavailableError):
+            return self.tr("Gemini is busy right now. Try again later.")
+        if isinstance(error, _automation.GeminiRequestError):
+            return self.tr("Gemini rejected the request: %s") % error
         return self.tr("Gemini returned an unexpected response.")
 
     def reset_state(self) -> None:

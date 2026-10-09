@@ -19,3 +19,11 @@ class GeminiNetworkError(GeminiError):
 
 class GeminiResponseError(GeminiError):
     pass
+
+
+class GeminiRequestError(GeminiError):
+    pass
+
+
+class GeminiUnavailableError(GeminiError):
+    pass

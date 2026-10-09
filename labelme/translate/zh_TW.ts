@@ -743,6 +743,14 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>無法連線至 Gemini。</translation>
     </message>
     <message>
+        <source>Gemini is busy right now. Try again later.</source>
+        <translation>Gemini 目前忙碌中。請稍後再試。</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the request: %s</source>
+        <translation>Gemini 拒絕了請求：%s</translation>
+    </message>
+    <message>
         <source>Gemini returned an unexpected response.</source>
         <translation>Gemini 傳回了非預期的回應。</translation>
     </message>

@@ -737,6 +737,14 @@ AI Text-to-Annotation 모델을 &apos;SAM3 (smart)&apos;(으)로 변경하거나
         <translation>Gemini에 연결할 수 없습니다.</translation>
     </message>
     <message>
+        <source>Gemini is busy right now. Try again later.</source>
+        <translation>Gemini가 현재 혼잡합니다. 나중에 다시 시도하세요.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the request: %s</source>
+        <translation>Gemini가 요청을 거부했습니다: %s</translation>
+    </message>
+    <message>
         <source>Gemini returned an unexpected response.</source>
         <translation>Gemini가 예상치 못한 응답을 반환했습니다.</translation>
     </message>

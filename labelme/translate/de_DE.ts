@@ -751,6 +751,14 @@ Wechseln Sie das AI Text-to-Annotation-Modell zu &apos;SAM3 (smart)&apos; oder s
         <translation>Gemini ist nicht erreichbar.</translation>
     </message>
     <message>
+        <source>Gemini is busy right now. Try again later.</source>
+        <translation>Gemini ist gerade ausgelastet. Bitte später erneut versuchen.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the request: %s</source>
+        <translation>Gemini hat die Anfrage abgelehnt: %s</translation>
+    </message>
+    <message>
         <source>Gemini returned an unexpected response.</source>
         <translation>Gemini hat eine unerwartete Antwort zurückgegeben.</translation>
     </message>

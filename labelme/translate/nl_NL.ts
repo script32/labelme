@@ -737,6 +737,14 @@ Wijzig het AI Text-to-Annotation-model naar &apos;SAM3 (smart)&apos; of stel het
         <translation>Kan Gemini niet bereiken.</translation>
     </message>
     <message>
+        <source>Gemini is busy right now. Try again later.</source>
+        <translation>Gemini is momenteel overbelast. Probeer het later opnieuw.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the request: %s</source>
+        <translation>Gemini heeft het verzoek geweigerd: %s</translation>
+    </message>
+    <message>
         <source>Gemini returned an unexpected response.</source>
         <translation>Gemini gaf een onverwacht antwoord.</translation>
     </message>

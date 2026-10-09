@@ -15,7 +15,9 @@ from labelme._automation._gemini_errors import GeminiAuthError
 from labelme._automation._gemini_errors import GeminiError
 from labelme._automation._gemini_errors import GeminiNetworkError
 from labelme._automation._gemini_errors import GeminiQuotaError
+from labelme._automation._gemini_errors import GeminiRequestError
 from labelme._automation._gemini_errors import GeminiResponseError
+from labelme._automation._gemini_errors import GeminiUnavailableError
 from labelme._automation._gemini_session import GEMINI_ENDPOINT
 from labelme._automation._gemini_session import GeminiSession
 
@@ -41,7 +43,8 @@ def test_detect_sends_key_model_prompt_and_image() -> None:
     assert headers["x-goog-api-key"] == _KEY
     assert timeout == 60.0
     assert body["model"] == "gemini-3.8-flash"
-    assert body["generation_config"] == {"thinking_level": "minimal"}
+    # gemini-3.8-flash rejects thinking_level "minimal" with HTTP 400.
+    assert "generation_config" not in body
     assert body["response_format"]["mime_type"] == "application/json"
     assert body["input"][0]["type"] == "text"
     assert '"nut"' in body["input"][0]["text"]
@@ -91,7 +94,13 @@ def test_detect_downscales_large_images_but_keeps_original_coordinates() -> None
             urllib.error.HTTPError(
                 GEMINI_ENDPOINT, 500, "x", email.message.Message(), None
             ),
-            GeminiNetworkError,
+            GeminiUnavailableError,
+        ),
+        (
+            urllib.error.HTTPError(
+                GEMINI_ENDPOINT, 503, "x", email.message.Message(), None
+            ),
+            GeminiUnavailableError,
         ),
         (urllib.error.URLError("no route"), GeminiNetworkError),
         (TimeoutError(), GeminiNetworkError),
@@ -146,5 +155,34 @@ def test_detect_wraps_unparsable_numbers_as_response_error() -> None:
     )
     with pytest.raises(GeminiResponseError):
         _session(post).detect(
+            image=np.zeros((10, 10, 3), dtype=np.uint8), texts=["nut"], want_masks=False
+        )
+
+
+def test_detect_reports_googles_message_for_rejected_requests() -> None:
+    body = io.BytesIO(
+        b'{"error": {"message": "Thinking level is not supported.", "code": "x"}}'
+    )
+    error = urllib.error.HTTPError(
+        GEMINI_ENDPOINT, 400, "Bad Request", email.message.Message(), body
+    )
+    with pytest.raises(GeminiRequestError) as exc_info:
+        _session(FakePost(error=error)).detect(
+            image=np.zeros((10, 10, 3), dtype=np.uint8), texts=["nut"], want_masks=False
+        )
+    assert str(exc_info.value) == "Thinking level is not supported."
+    assert exc_info.value.__suppress_context__
+
+
+def test_detect_falls_back_to_status_when_rejection_has_no_message() -> None:
+    error = urllib.error.HTTPError(
+        GEMINI_ENDPOINT,
+        404,
+        "Not Found",
+        email.message.Message(),
+        io.BytesIO(b"<html>"),
+    )
+    with pytest.raises(GeminiRequestError, match="HTTP 404"):
+        _session(FakePost(error=error)).detect(
             image=np.zeros((10, 10, 3), dtype=np.uint8), texts=["nut"], want_masks=False
         )

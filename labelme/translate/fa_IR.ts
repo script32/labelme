@@ -737,6 +737,14 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>اتصال به Gemini ممکن نشد.</translation>
     </message>
     <message>
+        <source>Gemini is busy right now. Try again later.</source>
+        <translation>Gemini در حال حاضر شلوغ است. بعداً دوباره تلاش کنید.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the request: %s</source>
+        <translation>Gemini درخواست را رد کرد: %s</translation>
+    </message>
+    <message>
         <source>Gemini returned an unexpected response.</source>
         <translation>Gemini پاسخ غیرمنتظره‌ای برگرداند.</translation>
     </message>

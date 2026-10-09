@@ -743,6 +743,14 @@ AI Text-to-Annotation modelini &apos;SAM3 (smart)&apos; olarak değiştirin veya
         <translation>Gemini&apos;ye ulaşılamadı.</translation>
     </message>
     <message>
+        <source>Gemini is busy right now. Try again later.</source>
+        <translation>Gemini şu anda yoğun. Daha sonra tekrar deneyin.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the request: %s</source>
+        <translation>Gemini isteği reddetti: %s</translation>
+    </message>
+    <message>
         <source>Gemini returned an unexpected response.</source>
         <translation>Gemini beklenmeyen bir yanıt döndürdü.</translation>
     </message>

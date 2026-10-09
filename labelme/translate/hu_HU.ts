@@ -751,6 +751,14 @@ Váltson az AI Text-to-Annotation modellnél &apos;SAM3 (smart)&apos;-re, vagy �
         <translation>Nem sikerült elérni a Geminit.</translation>
     </message>
     <message>
+        <source>Gemini is busy right now. Try again later.</source>
+        <translation>A Gemini jelenleg túlterhelt. Próbálja újra később.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the request: %s</source>
+        <translation>A Gemini elutasította a kérést: %s</translation>
+    </message>
+    <message>
         <source>Gemini returned an unexpected response.</source>
         <translation>A Gemini váratlan választ adott.</translation>
     </message>

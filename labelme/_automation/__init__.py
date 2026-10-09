@@ -4,7 +4,9 @@ from ._gemini_errors import GeminiAuthError
 from ._gemini_errors import GeminiError
 from ._gemini_errors import GeminiNetworkError
 from ._gemini_errors import GeminiQuotaError
+from ._gemini_errors import GeminiRequestError
 from ._gemini_errors import GeminiResponseError
+from ._gemini_errors import GeminiUnavailableError
 from ._gemini_session import GeminiSession
 from ._geometry import shape_to_xyxy_bbox
 from ._osam_session import OsamSession
@@ -29,8 +31,10 @@ __all__ = [
     "GeminiError",
     "GeminiNetworkError",
     "GeminiQuotaError",
+    "GeminiRequestError",
     "GeminiResponseError",
     "GeminiSession",
+    "GeminiUnavailableError",
     "MaskOutputUnavailableError",
     "OsamSession",
     "assign_available_group_ids",

@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import email.message
+import io
 import json
 import threading
 import urllib.error
@@ -254,3 +255,40 @@ def test_gemini_result_ignored_after_window_closes(
     win.close()
     qtbot.wait(100)
     assert win._canvas_widgets.canvas.shapes == []
+
+
+@pytest.mark.gui
+@pytest.mark.parametrize(
+    ("code", "body", "expected"),
+    [
+        (
+            400,
+            b'{"error": {"message": "Thinking level is not supported."}}',
+            "Gemini rejected the request: Thinking level is not supported.",
+        ),
+        (503, b"{}", "Gemini is busy right now. Try again later."),
+    ],
+)
+def test_gemini_service_errors_explain_the_cause(
+    *,
+    main_win: MainWinFactory,
+    qtbot: QtBot,
+    data_path: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+    code: int,
+    body: bytes,
+    expected: str,
+) -> None:
+    error = urllib.error.HTTPError(
+        _gemini_session.GEMINI_ENDPOINT,
+        code,
+        "x",
+        email.message.Message(),
+        io.BytesIO(body),
+    )
+    monkeypatch.setattr(_gemini_session, "_urllib_post", _FakePost(error=error))
+    win = _open(main_win, qtbot, data_path, tmp_path)
+    _configure(win, key="test-key", privacy=True)
+    _run(win, qtbot, create_mode="rectangle")
+    assert expected in win.statusBar().currentMessage()

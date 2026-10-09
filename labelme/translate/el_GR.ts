@@ -657,6 +657,14 @@ Switch the AI Text-to-Annotation model to &apos;SAM3 (smart)&apos;, or set the o
         <translation>Δεν ήταν δυνατή η σύνδεση με το Gemini.</translation>
     </message>
     <message>
+        <source>Gemini is busy right now. Try again later.</source>
+        <translation>Το Gemini είναι απασχολημένο αυτή τη στιγμή. Δοκιμάστε ξανά αργότερα.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the request: %s</source>
+        <translation>Το Gemini απέρριψε το αίτημα: %s</translation>
+    </message>
+    <message>
         <source>Gemini returned an unexpected response.</source>
         <translation>Το Gemini επέστρεψε μη αναμενόμενη απάντηση.</translation>
     </message>

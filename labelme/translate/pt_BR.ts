@@ -737,6 +737,14 @@ Mude o modelo de AI Text-to-Annotation para &apos;SAM3 (smart)&apos; ou defina o
         <translation>Não foi possível contatar o Gemini.</translation>
     </message>
     <message>
+        <source>Gemini is busy right now. Try again later.</source>
+        <translation>O Gemini está sobrecarregado no momento. Tente novamente mais tarde.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the request: %s</source>
+        <translation>O Gemini rejeitou a solicitação: %s</translation>
+    </message>
+    <message>
         <source>Gemini returned an unexpected response.</source>
         <translation>O Gemini retornou uma resposta inesperada.</translation>
     </message>

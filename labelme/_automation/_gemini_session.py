@@ -16,7 +16,9 @@ from numpy.typing import NDArray
 from ._gemini_errors import GeminiAuthError
 from ._gemini_errors import GeminiNetworkError
 from ._gemini_errors import GeminiQuotaError
+from ._gemini_errors import GeminiRequestError
 from ._gemini_errors import GeminiResponseError
+from ._gemini_errors import GeminiUnavailableError
 from ._gemini_prompt import build_prompt
 from ._gemini_prompt import build_response_schema
 from ._gemini_prompt import parse_response
@@ -80,7 +82,6 @@ class GeminiSession:
                         "mime_type": "image/jpeg",
                     },
                 ],
-                "generation_config": {"thinking_level": "minimal"},
                 "response_format": {
                     "type": "text",
                     "mime_type": "application/json",
@@ -91,6 +92,7 @@ class GeminiSession:
         headers = {"Content-Type": "application/json", "x-goog-api-key": self._api_key}
         AUTH_ERROR_CODES: Final[frozenset[int]] = frozenset({401, 403})
         QUOTA_ERROR_CODE: Final[int] = 429
+        SERVER_ERROR_MIN_CODE: Final[int] = 500
         try:
             raw = self._post(GEMINI_ENDPOINT, headers, body, self._timeout)
         except urllib.error.HTTPError as e:
@@ -98,7 +100,9 @@ class GeminiSession:
                 raise GeminiAuthError("Gemini rejected the API key") from None
             if e.code == QUOTA_ERROR_CODE:
                 raise GeminiQuotaError("Gemini quota exceeded") from None
-            raise GeminiNetworkError(f"Gemini returned HTTP {e.code}") from None
+            if e.code >= SERVER_ERROR_MIN_CODE:
+                raise GeminiUnavailableError(f"Gemini returned HTTP {e.code}") from None
+            raise GeminiRequestError(_read_error_message(e)) from None
         except Exception:  # noqa: BLE001 -- any transport failure must stay a GeminiError
             # `from None` drops the original traceback: with loguru's diagnose
             # mode, it would print this frame's locals, including the key header.
@@ -116,6 +120,15 @@ class GeminiSession:
             raise
         except Exception:  # noqa: BLE001 -- malformed numbers must stay a GeminiError
             raise GeminiResponseError("Gemini returned unusable values") from None
+
+
+def _read_error_message(error: urllib.error.HTTPError, /) -> str:
+    # Google explains rejected requests in the body; it never echoes the key.
+    try:
+        message = json.loads(error.read())["error"]["message"]
+    except Exception:  # noqa: BLE001 -- any unreadable body falls back to the status
+        return f"Gemini returned HTTP {error.code}"
+    return message if isinstance(message, str) else f"Gemini returned HTTP {error.code}"
 
 
 def _encode_jpeg(image: NDArray[np.uint8], /) -> str:
