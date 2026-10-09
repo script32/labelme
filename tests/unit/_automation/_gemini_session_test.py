@@ -4,6 +4,7 @@ import base64
 import email.message
 import http.client
 import io
+import json
 import urllib.error
 from typing import Final
 
@@ -19,8 +20,11 @@ from labelme._automation._gemini_errors import GeminiRequestError
 from labelme._automation._gemini_errors import GeminiResponseError
 from labelme._automation._gemini_errors import GeminiUnavailableError
 from labelme._automation._gemini_session import GEMINI_ENDPOINT
+from labelme._automation._gemini_session import GEMINI_MODELS_ENDPOINT
 from labelme._automation._gemini_session import GeminiSession
+from labelme._automation._gemini_session import list_gemini_models
 
+from ._gemini_fakes import FakeGet
 from ._gemini_fakes import FakePost
 from ._gemini_fakes import interaction
 
@@ -186,3 +190,57 @@ def test_detect_falls_back_to_status_when_rejection_has_no_message() -> None:
         _session(FakePost(error=error)).detect(
             image=np.zeros((10, 10, 3), dtype=np.uint8), texts=["nut"], want_masks=False
         )
+
+
+def _model(name: str, /, *methods: str) -> dict[str, object]:
+    return {"name": f"models/{name}", "supportedGenerationMethods": list(methods)}
+
+
+def test_list_models_keeps_only_image_understanding_gemini_models() -> None:
+    body = json.dumps(
+        {
+            "models": [
+                _model("gemini-3.5-flash", "generateContent"),
+                _model("gemini-2.5-flash-preview-tts", "generateContent"),
+                _model("gemini-3-pro-image", "generateContent"),
+                _model("gemini-3.5-transcribe", "generateContent"),
+                _model("gemini-embedding-001", "embedContent"),
+                _model("gemma-3-27b-it", "generateContent"),
+                _model("gemini-3.8-flash", "generateContent", "countTokens"),
+            ]
+        }
+    ).encode()
+    get = FakeGet(response=body)
+    assert list_gemini_models(api_key=_KEY, get=get) == [
+        "gemini-3.8-flash",
+        "gemini-3.5-flash",
+    ]
+    url, headers, _ = get.calls[0]
+    assert url.startswith(GEMINI_MODELS_ENDPOINT)
+    assert headers["x-goog-api-key"] == _KEY
+
+
+@pytest.mark.parametrize(
+    ("error", "expected"),
+    [
+        (
+            urllib.error.HTTPError(
+                GEMINI_MODELS_ENDPOINT, 403, "x", email.message.Message(), None
+            ),
+            GeminiAuthError,
+        ),
+        (urllib.error.URLError("no route"), GeminiNetworkError),
+    ],
+)
+def test_list_models_maps_errors(
+    *, error: BaseException, expected: type[GeminiError]
+) -> None:
+    with pytest.raises(expected) as exc_info:
+        list_gemini_models(api_key=_KEY, get=FakeGet(error=error))
+    assert _KEY not in str(exc_info.value)
+
+
+@pytest.mark.parametrize("raw", [b"not json", b"[]", b'{"models": 3}'])
+def test_list_models_rejects_malformed_bodies(*, raw: bytes) -> None:
+    with pytest.raises(GeminiResponseError):
+        list_gemini_models(api_key=_KEY, get=FakeGet(response=raw))

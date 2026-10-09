@@ -1031,3 +1031,14 @@ def test_gemini_page_stays_enabled_when_settings_are_not_editable(
     item = dialog._page._navigation.currentItem()
     assert item is not None
     assert item.text() == "Gemini"
+
+
+def test_set_value_ignores_settings_without_a_control(*, qtbot: QtBot) -> None:
+    dialog = SettingsDialog(
+        config=load_config(config_file=None, config_overrides={}),
+        apply_setting=lambda _key_path, _value: True,
+        preview_shape_color=lambda _key_path, _value: None,
+        open_as_text=lambda: None,
+    )
+    qtbot.addWidget(dialog)
+    dialog.set_value(key_path=("ai", "gemini_model"), value="gemini-3.7-flash")

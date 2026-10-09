@@ -251,8 +251,32 @@
         <translation>Хранится только на этом компьютере, вне файла конфигурации labelme. При запуске Gemini текущее изображение отправляется в Google.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Модель Gemini</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>Загрузить модели</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>Ключ API</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Модель</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>Сначала укажите ключ API.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini отклонил ключ API.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>Не удалось загрузить список моделей.</translation>
     </message>
 </context>
 <context>

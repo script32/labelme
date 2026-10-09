@@ -251,8 +251,32 @@
         <translation>Yalnızca bu bilgisayarda, labelme yapılandırma dosyasının dışında saklanır. Gemini&apos;yi çalıştırmak mevcut görüntüyü Google&apos;a gönderir.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Gemini modeli</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>Modelleri yükle</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>API anahtarı</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Model</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>Önce API anahtarını ayarlayın.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini API anahtarını reddetti.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>Model listesi yüklenemedi.</translation>
     </message>
 </context>
 <context>

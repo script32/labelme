@@ -251,8 +251,32 @@
         <translation>Chỉ được lưu trên máy tính này, bên ngoài tệp cấu hình của labelme. Khi chạy Gemini, ảnh hiện tại sẽ được gửi tới Google.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Mô hình Gemini</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>Tải mô hình</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>Khóa API</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Mô hình</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>Hãy đặt khóa API trước.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini đã từ chối khóa API.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>Không thể tải danh sách mô hình.</translation>
     </message>
 </context>
 <context>

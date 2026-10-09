@@ -251,8 +251,32 @@
         <translation>فقط روی همین رایانه و بیرون از فایل پیکربندی labelme ذخیره می‌شود. اجرای Gemini تصویر فعلی را به Google می‌فرستد.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>مدل Gemini</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>بارگیری مدل‌ها</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>کلید API</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>مدل</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>ابتدا کلید API را وارد کنید.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini کلید API را رد کرد.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>بارگیری فهرست مدل‌ها ممکن نشد.</translation>
     </message>
 </context>
 <context>

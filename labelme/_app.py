@@ -87,6 +87,10 @@ class _ZoomMode(enum.Enum):
 _TextToAnnotationCreateMode: TypeAlias = Literal["polygon", "rectangle"]
 
 
+def _list_gemini_models(api_key: str, /) -> list[str]:
+    return _automation.list_gemini_models(api_key=api_key)
+
+
 @dataclasses.dataclass(frozen=True)
 class _TextPromptJob:
     image_path: str | None
@@ -3209,7 +3213,15 @@ class MainWindow(QtWidgets.QMainWindow):
                 models_widget=ModelsWidget(
                     manager=self._model_manager, remove_model=self._remove_ai_model
                 ),
-                gemini_widget=GeminiKeyWidget(settings=self._window_state),
+                gemini_widget=GeminiKeyWidget(
+                    settings=self._window_state,
+                    model=self._config["ai"]["gemini_model"],
+                    apply_model=functools.partial(
+                        self._apply_setting_change, ("ai", "gemini_model")
+                    ),
+                    model_editable=self._is_settings_editable,
+                    list_models=_list_gemini_models,
+                ),
                 settings_editable=self._is_settings_editable,
                 parent=self,
             )

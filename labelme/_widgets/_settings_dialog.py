@@ -911,6 +911,9 @@ class SettingsDialog(QtWidgets.QDialog):
         self.accept()
 
     def set_value(self, *, key_path: tuple[str, ...], value: object) -> None:
+        # Settings edited on custom pages (e.g. the Gemini model) have no editor.
+        if key_path not in self._editors:
+            return
         editor = self._editors[key_path]
         with QtCore.QSignalBlocker(editor):
             self._set_editor_value(editor=editor, value=value)

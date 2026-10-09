@@ -251,8 +251,32 @@
         <translation>Stockée uniquement sur cet ordinateur, hors du fichier de configuration de labelme. Exécuter Gemini envoie l’image actuelle à Google.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Modèle Gemini</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>Charger les modèles</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>Clé API</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Modèle</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>Définissez d’abord la clé API.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini a refusé la clé API.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>Impossible de charger la liste des modèles.</translation>
     </message>
 </context>
 <context>

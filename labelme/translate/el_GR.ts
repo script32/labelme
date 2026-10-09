@@ -251,8 +251,32 @@
         <translation>Αποθηκεύεται μόνο σε αυτόν τον υπολογιστή, εκτός του αρχείου ρυθμίσεων του labelme. Η εκτέλεση του Gemini στέλνει την τρέχουσα εικόνα στην Google.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Μοντέλο Gemini</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>Φόρτωση μοντέλων</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>Κλειδί API</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Μοντέλο</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>Ορίστε πρώτα το κλειδί API.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Το Gemini απέρριψε το κλειδί API.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>Δεν ήταν δυνατή η φόρτωση της λίστας μοντέλων.</translation>
     </message>
 </context>
 <context>

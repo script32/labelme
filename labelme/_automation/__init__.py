@@ -8,6 +8,7 @@ from ._gemini_errors import GeminiRequestError
 from ._gemini_errors import GeminiResponseError
 from ._gemini_errors import GeminiUnavailableError
 from ._gemini_session import GeminiSession
+from ._gemini_session import list_gemini_models
 from ._geometry import shape_to_xyxy_bbox
 from ._osam_session import OsamSession
 from ._shape_builders import MASK_REQUIRED_SHAPE_TYPES
@@ -38,6 +39,7 @@ __all__ = [
     "MaskOutputUnavailableError",
     "OsamSession",
     "assign_available_group_ids",
+    "list_gemini_models",
     "propose_shapes_from_texts",
     "shape_to_xyxy_bbox",
     "shapes_from_detections",

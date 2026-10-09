@@ -251,8 +251,32 @@
         <translation>Przechowywany tylko na tym komputerze, poza plikiem konfiguracyjnym labelme. Uruchomienie Gemini wysyła bieżący obraz do Google.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Model Gemini</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>Wczytaj modele</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>Klucz API</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Model</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>Najpierw ustaw klucz API.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini odrzucił klucz API.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>Nie można wczytać listy modeli.</translation>
     </message>
 </context>
 <context>

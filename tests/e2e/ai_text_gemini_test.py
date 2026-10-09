@@ -16,6 +16,7 @@ from pytestqt.qtbot import QtBot
 
 from labelme import _gemini_key
 from labelme._automation import _gemini_session
+from labelme._widgets._gemini_key_widget import GeminiKeyWidget
 
 from .conftest import MainWinFactory
 from .conftest import show_window_and_wait_for_imagedata
@@ -26,6 +27,7 @@ if TYPE_CHECKING:
 
 class _FakePost:
     calls: int
+    models: list[str]
 
     def __init__(
         self,
@@ -35,6 +37,7 @@ class _FakePost:
         gate: threading.Event | None = None,
     ) -> None:
         self.calls = 0
+        self.models = []
         self._entries = entries or []
         self._error = error
         self._gate = gate
@@ -43,11 +46,12 @@ class _FakePost:
         self,
         _url: str,
         _headers: dict[str, str],
-        _body: bytes,
+        body: bytes,
         _timeout: float,
         /,
     ) -> bytes:
         self.calls += 1
+        self.models.append(json.loads(body)["model"])
         if self._gate is not None:
             self._gate.wait(5)
         if self._error is not None:
@@ -292,3 +296,39 @@ def test_gemini_service_errors_explain_the_cause(
     _configure(win, key="test-key", privacy=True)
     _run(win, qtbot, create_mode="rectangle")
     assert expected in win.statusBar().currentMessage()
+
+
+@pytest.mark.gui
+def test_gemini_model_chosen_in_settings_is_used_and_saved(
+    *,
+    main_win: MainWinFactory,
+    qtbot: QtBot,
+    data_path: Path,
+    tmp_path: Path,
+    monkeypatch: pytest.MonkeyPatch,
+) -> None:
+    fake = _FakePost(entries=[_PERSON])
+    monkeypatch.setattr(_gemini_session, "_urllib_post", fake)
+    config_file = tmp_path / "config.yaml"
+    config_file.write_text("auto_save: true\n")
+    win = main_win(
+        file_or_dir=str(data_path / "raw/2011_000003.jpg"),
+        config_file=config_file,
+        output_dir=str(tmp_path),
+    )
+    show_window_and_wait_for_imagedata(qtbot=qtbot, win=win)
+    _configure(win, key="test-key", privacy=True)
+
+    win._open_gemini_settings()
+    assert win._settings_dialog is not None
+    widget = win._settings_dialog.findChild(GeminiKeyWidget)
+    assert widget is not None
+    line_edit = widget._model_combo.lineEdit()
+    assert line_edit is not None
+    widget._model_combo.setEditText("gemini-3.7-flash")
+    line_edit.editingFinished.emit()
+    win._settings_dialog.close()
+
+    _run(win, qtbot, create_mode="rectangle")
+    assert fake.models == ["gemini-3.7-flash"]
+    assert "gemini_model: gemini-3.7-flash" in config_file.read_text()

@@ -251,8 +251,32 @@
         <translation>このコンピューターにのみ、labelme の設定ファイルとは別に保存されます。Gemini を実行すると、現在の画像が Google に送信されます。</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Gemini モデル</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>モデルを読み込む</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>API キー</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>モデル</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>先に API キーを設定してください。</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini が API キーを拒否しました。</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>モデル一覧を読み込めませんでした。</translation>
     </message>
 </context>
 <context>

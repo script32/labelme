@@ -251,8 +251,32 @@
         <translation>Disimpan hanya di komputer ini, di luar file konfigurasi labelme. Menjalankan Gemini akan mengirim gambar saat ini ke Google.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Model Gemini</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>Muat model</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>Kunci API</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Model</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>Atur kunci API terlebih dahulu.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini menolak kunci API.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>Tidak dapat memuat daftar model.</translation>
     </message>
 </context>
 <context>

@@ -251,8 +251,32 @@
         <translation>Se guarda solo en este equipo, fuera del archivo de configuración de labelme. Al usar Gemini, la imagen actual se envía a Google.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Modelo de Gemini</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>Cargar modelos</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>API key</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Modelo</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>Configura primero la API key.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini rechazó la API key.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>No se pudo cargar la lista de modelos.</translation>
     </message>
 </context>
 <context>

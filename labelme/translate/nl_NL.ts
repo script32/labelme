@@ -251,8 +251,32 @@
         <translation>Alleen op deze computer opgeslagen, buiten het labelme-configuratiebestand. Bij het uitvoeren van Gemini wordt de huidige afbeelding naar Google verzonden.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Gemini-model</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>Modellen laden</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>API-sleutel</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Model</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>Stel eerst de API-sleutel in.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini heeft de API-sleutel geweigerd.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>Kan de modellijst niet laden.</translation>
     </message>
 </context>
 <context>

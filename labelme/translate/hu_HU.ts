@@ -251,8 +251,32 @@
         <translation>Csak ezen a számítógépen tárolódik, a labelme konfigurációs fájlján kívül. A Gemini futtatása elküldi az aktuális képet a Google-nek.</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Gemini-modell</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>Modellek betöltése</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>API-kulcs</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>Modell</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>Először adja meg az API-kulcsot.</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>A Gemini elutasította az API-kulcsot.</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>Nem sikerült betölteni a modellek listáját.</translation>
     </message>
 </context>
 <context>

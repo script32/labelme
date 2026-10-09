@@ -14,6 +14,7 @@ from loguru import logger
 from numpy.typing import NDArray
 
 from ._gemini_errors import GeminiAuthError
+from ._gemini_errors import GeminiError
 from ._gemini_errors import GeminiNetworkError
 from ._gemini_errors import GeminiQuotaError
 from ._gemini_errors import GeminiRequestError
@@ -26,7 +27,12 @@ from ._gemini_prompt import parse_response
 GEMINI_ENDPOINT: Final[str] = (
     "https://generativelanguage.googleapis.com/v1beta/interactions"
 )
+GEMINI_MODELS_ENDPOINT: Final[str] = (
+    "https://generativelanguage.googleapis.com/v1beta/models"
+)
+
 Post = Callable[[str, dict[str, str], bytes, float], bytes]
+Get = Callable[[str, dict[str, str], float], bytes]
 
 
 def _urllib_post(
@@ -35,6 +41,53 @@ def _urllib_post(
     request = urllib.request.Request(url, data=body, headers=headers, method="POST")
     with urllib.request.urlopen(request, timeout=timeout) as response:
         return response.read()
+
+
+def _urllib_get(url: str, headers: dict[str, str], timeout: float, /) -> bytes:
+    request = urllib.request.Request(url, headers=headers, method="GET")
+    with urllib.request.urlopen(request, timeout=timeout) as response:
+        return response.read()
+
+
+def list_gemini_models(
+    *, api_key: str, timeout: float = 15.0, get: Get | None = None
+) -> list[str]:
+    # Only models that can read an image and answer in text are useful here.
+    EXCLUDED_KINDS: Final[tuple[str, ...]] = (
+        "tts",
+        "image",
+        "transcribe",
+        "embedding",
+        "customtools",
+    )
+    get = get if get is not None else _urllib_get
+    try:
+        raw = get(
+            f"{GEMINI_MODELS_ENDPOINT}?pageSize=1000",
+            {"x-goog-api-key": api_key},
+            timeout,
+        )
+    except Exception as e:  # noqa: BLE001 -- any transport failure must stay a GeminiError
+        raise _to_gemini_error(e) from None
+    try:
+        payload = json.loads(raw)
+        models = payload["models"]
+        names = [
+            model["name"].removeprefix("models/")
+            for model in models
+            if "generateContent" in model.get("supportedGenerationMethods", [])
+        ]
+    except Exception:  # noqa: BLE001 -- any malformed body must stay a GeminiError
+        raise GeminiResponseError("Gemini returned an unexpected model list") from None
+    return sorted(
+        (
+            name
+            for name in names
+            if name.startswith("gemini-")
+            and not any(kind in name for kind in EXCLUDED_KINDS)
+        ),
+        reverse=True,
+    )
 
 
 class GeminiSession:
@@ -90,23 +143,12 @@ class GeminiSession:
             }
         ).encode()
         headers = {"Content-Type": "application/json", "x-goog-api-key": self._api_key}
-        AUTH_ERROR_CODES: Final[frozenset[int]] = frozenset({401, 403})
-        QUOTA_ERROR_CODE: Final[int] = 429
-        SERVER_ERROR_MIN_CODE: Final[int] = 500
         try:
             raw = self._post(GEMINI_ENDPOINT, headers, body, self._timeout)
-        except urllib.error.HTTPError as e:
-            if e.code in AUTH_ERROR_CODES:
-                raise GeminiAuthError("Gemini rejected the API key") from None
-            if e.code == QUOTA_ERROR_CODE:
-                raise GeminiQuotaError("Gemini quota exceeded") from None
-            if e.code >= SERVER_ERROR_MIN_CODE:
-                raise GeminiUnavailableError(f"Gemini returned HTTP {e.code}") from None
-            raise GeminiRequestError(_read_error_message(e)) from None
-        except Exception:  # noqa: BLE001 -- any transport failure must stay a GeminiError
+        except Exception as e:  # noqa: BLE001 -- any transport failure must stay a GeminiError
             # `from None` drops the original traceback: with loguru's diagnose
             # mode, it would print this frame's locals, including the key header.
-            raise GeminiNetworkError("Could not reach Gemini") from None
+            raise _to_gemini_error(e) from None
         try:
             text = _extract_output_text(raw)
             logger.debug("Gemini response text: {!r}", text)
@@ -120,6 +162,21 @@ class GeminiSession:
             raise
         except Exception:  # noqa: BLE001 -- malformed numbers must stay a GeminiError
             raise GeminiResponseError("Gemini returned unusable values") from None
+
+
+def _to_gemini_error(error: Exception, /) -> GeminiError:
+    AUTH_ERROR_CODES: Final[frozenset[int]] = frozenset({401, 403})
+    QUOTA_ERROR_CODE: Final[int] = 429
+    SERVER_ERROR_MIN_CODE: Final[int] = 500
+    if not isinstance(error, urllib.error.HTTPError):
+        return GeminiNetworkError("Could not reach Gemini")
+    if error.code in AUTH_ERROR_CODES:
+        return GeminiAuthError("Gemini rejected the API key")
+    if error.code == QUOTA_ERROR_CODE:
+        return GeminiQuotaError("Gemini quota exceeded")
+    if error.code >= SERVER_ERROR_MIN_CODE:
+        return GeminiUnavailableError(f"Gemini returned HTTP {error.code}")
+    return GeminiRequestError(_read_error_message(error))
 
 
 def _read_error_message(error: urllib.error.HTTPError, /) -> str:

@@ -251,8 +251,32 @@
         <translation>จัดเก็บไว้ในคอมพิวเตอร์เครื่องนี้เท่านั้น แยกจากไฟล์การกำหนดค่าของ labelme การรัน Gemini จะส่งรูปภาพปัจจุบันไปยัง Google</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>โมเดล Gemini</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>โหลดโมเดล</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>คีย์ API</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>โมเดล</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>โปรดตั้งค่าคีย์ API ก่อน</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini ปฏิเสธคีย์ API</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>ไม่สามารถโหลดรายการโมเดลได้</translation>
     </message>
 </context>
 <context>

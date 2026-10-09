@@ -251,8 +251,32 @@
         <translation>僅儲存在本機，不寫入 labelme 設定檔。執行 Gemini 會將目前影像傳送給 Google。</translation>
     </message>
     <message>
+        <source>Gemini model</source>
+        <translation>Gemini 模型</translation>
+    </message>
+    <message>
+        <source>Load models</source>
+        <translation>載入模型</translation>
+    </message>
+    <message>
         <source>API key</source>
         <translation>API 金鑰</translation>
+    </message>
+    <message>
+        <source>Model</source>
+        <translation>模型</translation>
+    </message>
+    <message>
+        <source>Set the API key first.</source>
+        <translation>請先設定 API 金鑰。</translation>
+    </message>
+    <message>
+        <source>Gemini rejected the API key.</source>
+        <translation>Gemini 拒絕了 API 金鑰。</translation>
+    </message>
+    <message>
+        <source>Could not load the model list.</source>
+        <translation>無法載入模型清單。</translation>
     </message>
 </context>
 <context>
